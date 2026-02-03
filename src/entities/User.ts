@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   OneToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -36,4 +37,10 @@ export class User {
     cascade: true,
   })
   userInfo?: any;
+
+  @OneToMany(() => require("./Registration").Registration, (registration: any) => registration.user)
+  registrations?: any[];
+
+  @OneToMany(() => require("./UserProgram").UserProgram, (userProgram: any) => userProgram.user)
+  programs?: any[];
 }
