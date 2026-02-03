@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -39,7 +39,7 @@ export default function Profile() {
 
   if (status === "loading" || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
+      <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-full flex items-center justify-center">
         <div className="text-center">
           <svg className="animate-spin h-12 w-12 text-indigo-600 mx-auto" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -56,26 +56,8 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      {/* Header */}
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <Link href="/" className="text-2xl font-bold text-indigo-600 hover:text-indigo-700 transition-colors">
-              Pluies de Juillet
-            </Link>
-            <button
-              onClick={() => signOut({ redirect: false })}
-              className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors"
-            >
-              Se déconnecter
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-full">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           {/* Profile Header */}
           <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-12 text-center">
@@ -173,7 +155,7 @@ export default function Profile() {
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

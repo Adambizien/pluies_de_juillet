@@ -5,6 +5,8 @@ import { initDatabase } from "@/lib/db";
 import { Providers } from "./providers";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/auth";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,10 +35,14 @@ export default async function RootLayout({
   return (
     <html lang="fr">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
         <Providers session={session}>
-          {children}
+          <Header />
+          <main className="flex-1 flex flex-col">
+            {children}
+          </main>
+          <Footer />
         </Providers>
       </body>
     </html>
