@@ -16,6 +16,14 @@ export default function Profile() {
   const { data: session, status } = useSession();
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editForm, setEditForm] = useState({
+    firstname: "",
+    lastname: "",
+    phone: "",
+    dateOfBirth: "",
+  });
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -29,12 +37,55 @@ export default function Profile() {
       if (response.ok) {
         const data = await response.json();
         setUserInfo(data);
+        setEditForm({
+          firstname: data.firstname || "",
+          lastname: data.lastname || "",
+          phone: data.phone || "",
+          dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth).toISOString().split("T")[0] : "",
+        });
       }
     } catch (error) {
       console.error("Erreur récupération infos:", error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const response = await fetch("/api/user/info", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(editForm),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setUserInfo(result.data);
+        setIsEditing(false);
+      } else {
+        const error = await response.json();
+        alert(error.error || "Erreur lors de la mise à jour");
+      }
+    } catch (error) {
+      console.error("Erreur mise à jour:", error);
+      alert("Erreur lors de la mise à jour");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setEditForm({
+      firstname: userInfo?.firstname || "",
+      lastname: userInfo?.lastname || "",
+      phone: userInfo?.phone || "",
+      dateOfBirth: userInfo?.dateOfBirth ? new Date(userInfo.dateOfBirth).toISOString().split("T")[0] : "",
+    });
+    setIsEditing(false);
   };
 
   if (status === "loading" || loading) {
@@ -74,7 +125,52 @@ export default function Profile() {
 
           {/* Profile Details */}
           <div className="p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Informations personnelles</h2>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900">Informations personnelles</h2>
+              {!isEditing ? (
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  Modifier
+                </button>
+              ) : (
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleCancel}
+                    disabled={saving}
+                    className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium rounded-lg transition-colors"
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    onClick={handleSave}
+                    disabled={saving}
+                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors flex items-center gap-2"
+                  >
+                    {saving ? (
+                      <>
+                        <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Enregistrement...
+                      </>
+                    ) : (
+                      <>
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        Enregistrer
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+            </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-indigo-100">
@@ -84,7 +180,18 @@ export default function Profile() {
                   </svg>
                   <p className="text-sm font-medium text-gray-600">Prénom</p>
                 </div>
-                <p className="text-lg font-semibold text-gray-900">{userInfo?.firstname || "Non renseigné"}</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editForm.firstname}
+                    onChange={(e) => setEditForm({ ...editForm, firstname: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    placeholder="Prénom"
+                    required
+                  />
+                ) : (
+                  <p className="text-lg font-semibold text-gray-900">{userInfo?.firstname || "Non renseigné"}</p>
+                )}
               </div>
 
               <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-100">
@@ -94,7 +201,17 @@ export default function Profile() {
                   </svg>
                   <p className="text-sm font-medium text-gray-600">Nom</p>
                 </div>
-                <p className="text-lg font-semibold text-gray-900">{userInfo?.lastname || "Non renseigné"}</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editForm.lastname}
+                    onChange={(e) => setEditForm({ ...editForm, lastname: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="Nom"
+                  />
+                ) : (
+                  <p className="text-lg font-semibold text-gray-900">{userInfo?.lastname || "Non renseigné"}</p>
+                )}
               </div>
 
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-100">
@@ -104,7 +221,21 @@ export default function Profile() {
                   </svg>
                   <p className="text-sm font-medium text-gray-600">Téléphone</p>
                 </div>
-                <p className="text-lg font-semibold text-gray-900">{userInfo?.phone || "Non renseigné"}</p>
+                {isEditing ? (
+                  <input
+                    type="tel"
+                    value={editForm.phone}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/[^0-9+\s()-]/g, '');
+                      setEditForm({ ...editForm, phone: value });
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    placeholder="Téléphone"
+                    pattern="[0-9+\s()-]*"
+                  />
+                ) : (
+                  <p className="text-lg font-semibold text-gray-900">{userInfo?.phone || "Non renseigné"}</p>
+                )}
               </div>
 
               <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl p-6 border border-orange-100">
@@ -114,11 +245,20 @@ export default function Profile() {
                   </svg>
                   <p className="text-sm font-medium text-gray-600">Date de naissance</p>
                 </div>
-                <p className="text-lg font-semibold text-gray-900">
-                  {userInfo?.dateOfBirth
-                    ? new Date(userInfo.dateOfBirth).toLocaleDateString("fr-FR")
-                    : "Non renseignée"}
-                </p>
+                {isEditing ? (
+                  <input
+                    type="date"
+                    value={editForm.dateOfBirth}
+                    onChange={(e) => setEditForm({ ...editForm, dateOfBirth: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  />
+                ) : (
+                  <p className="text-lg font-semibold text-gray-900">
+                    {userInfo?.dateOfBirth
+                      ? new Date(userInfo.dateOfBirth).toLocaleDateString("fr-FR")
+                      : "Non renseignée"}
+                  </p>
+                )}
               </div>
 
               <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-6 border border-emerald-100">
@@ -129,16 +269,6 @@ export default function Profile() {
                   <p className="text-sm font-medium text-gray-600">Email</p>
                 </div>
                 <p className="text-lg font-semibold text-gray-900">{session?.user?.email}</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-rose-50 to-pink-50 rounded-xl p-6 border border-rose-100">
-                <div className="flex items-center mb-2">
-                  <svg className="w-5 h-5 text-rose-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                  <p className="text-sm font-medium text-gray-600">Rôle</p>
-                </div>
-                <p className="text-lg font-semibold text-gray-900 capitalize">{String((session?.user as Record<string, unknown>)?.role || "Utilisateur")}</p>
               </div>
             </div>
           </div>
