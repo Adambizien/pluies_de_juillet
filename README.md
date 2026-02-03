@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pluies de Juillet
 
-## Getting Started
+Un projet Next.js avec TypeORM et PostgreSQL pour gérer les utilisateurs.
 
-First, run the development server:
+## 📋 Prérequis
+
+- Node.js 18+ et npm
+- PostgreSQL 12+
+
+## 🚀 Installation et Démarrage
+
+### 1. Cloner le projet
+
+```bash
+git clone <repo-url>
+cd pluies_de_juillet
+```
+
+### 2. Installer les dépendances
+
+```bash
+npm install
+```
+
+### 3. Configurer la base de données
+
+#### a) Installer PostgreSQL (si pas déjà installé)
+
+**Linux (Ubuntu/Debian):**
+```bash
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+sudo service postgresql start
+```
+
+**macOS (avec Homebrew):**
+```bash
+brew install postgresql@15
+brew services start postgresql@15
+```
+
+#### b) Créer la base de données
+
+```bash
+PGPASSWORD=postgres psql -U postgres -h localhost < src/migrations/01-init-database.sql
+```
+
+Si tu as un autre mot de passe, remplace `postgres` dans la commande et dans le fichier `.env.local`.
+
+### 4. Configurer les variables d'environnement
+
+Crée un fichier `.env.local` à la racine du projet :
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_NAME=pluies_de_juillet
+DB_SYNC=true
+DB_LOGGING=false
+```
+
+> ⚠️ Modifie les valeurs selon ta configuration PostgreSQL.
+
+### 5. Lancer le serveur de développement
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Le site sera accessible à `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Au démarrage, tu devrais voir :
+```
+✅ Database connected successfully
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Les tables `users` et `user_info` seront créées automatiquement.
