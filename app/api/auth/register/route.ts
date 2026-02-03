@@ -1,6 +1,7 @@
 import { AppDataSource } from "@/src/data-source";
 import { User, UserRole } from "@/src/entities/User";
 import { UserInfo } from "@/src/entities/UserInfo";
+import { validatePassword } from "@/lib/passwordValidator";
 import * as bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -13,6 +14,13 @@ export async function POST(req: NextRequest) {
     if (!email || !password || !firstname) {
       return NextResponse.json(
         { error: "Email, password et firstname sont requis" },
+        { status: 400 }
+      );
+    }
+    const passwordValidation = validatePassword(password);
+    if (!passwordValidation.isValid) {
+      return NextResponse.json(
+        { error: passwordValidation.errors.join(", ") },
         { status: 400 }
       );
     }

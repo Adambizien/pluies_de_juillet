@@ -27,7 +27,7 @@ export default function Login() {
       if (result?.error) {
         setError(result.error);
       } else {
-        router.push("/dashboard");
+        router.push("/");
       }
     } catch {
       setError("Une erreur est survenue");
@@ -107,7 +107,7 @@ export default function Login() {
               <p className="text-sm text-gray-600">
                 Pas encore de compte ?{" "}
                 <a href="/register" className="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">
-                  S'inscrire
+                  S&apos;inscrire
                 </a>
               </p>
             </div>

@@ -2,20 +2,36 @@
 
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { validatePassword } from "@/lib/passwordValidator";
 
 export default function Register() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [password, setPassword] = useState("");
+  const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
+
+  const handlePasswordChange = (value: string) => {
+    setPassword(value);
+    const validation = validatePassword(value);
+    setPasswordErrors(validation.errors);
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
+
+    const passwordValidation = validatePassword(password);
+    if (!passwordValidation.isValid) {
+      setError("Le mot de passe ne respecte pas les critères de sécurité");
+      setLoading(false);
+      return;
+    }
 
     const formData = new FormData(e.currentTarget);
     const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
     const firstname = formData.get("firstname") as string;
     const lastname = formData.get("lastname") as string;
     const phone = formData.get("phone") as string;
@@ -73,7 +89,7 @@ export default function Register() {
             <h2 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
               Créer un compte
             </h2>
-            <p className="mt-2 text-gray-600">Rejoignez-nous dès aujourd'hui</p>
+            <p className="mt-2 text-gray-600">Rejoignez-nous dès aujourd&apos;hui</p>
           </div>
 
           {error && (
@@ -134,9 +150,27 @@ export default function Register() {
                   type="password"
                   autoComplete="new-password"
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400"
+                  value={password}
+                  onChange={(e) => handlePasswordChange(e.target.value)}
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400 ${
+                    passwordErrors.length > 0 ? "border-red-300" : "border-gray-300"
+                  }`}
                   placeholder="••••••••"
                 />
+                <p className="text-xs text-gray-500 mt-2 mb-2">
+                  Minimum 12 caractères, 1 majuscule, 1 minuscule, 1 chiffre, 1 caractère spécial
+                </p>
+                {passwordErrors.length > 0 && (
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-3 mt-2">
+                    <ul className="list-disc list-inside space-y-1">
+                      {passwordErrors.map((error, index) => (
+                        <li key={index} className="text-xs text-red-700">
+                          {error}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
               <div>
                 <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1.5">
