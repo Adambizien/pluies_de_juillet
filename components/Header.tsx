@@ -3,6 +3,7 @@
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 interface UserInfo {
   firstname: string;
@@ -16,6 +17,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const userRole = (session?.user as Record<string, unknown>)?.role as string;
+  const pathname = usePathname();
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -84,7 +86,11 @@ export default function Header() {
                         <div className="py-2">
                           <Link
                             href="/"
-                            className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 transition-colors"
+                            className={`flex items-center px-4 py-2 text-sm transition-colors ${
+                              pathname === "/"
+                                ? "bg-indigo-50 text-indigo-700 font-medium"
+                                : "text-gray-700 hover:bg-indigo-50"
+                            }`}
                             onClick={() => setMenuOpen(false)}
                           >
                             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -94,7 +100,11 @@ export default function Header() {
                           </Link>
                           <Link
                             href="/profile"
-                            className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 transition-colors"
+                            className={`flex items-center px-4 py-2 text-sm transition-colors ${
+                              pathname === "/profile"
+                                ? "bg-indigo-50 text-indigo-700 font-medium"
+                                : "text-gray-700 hover:bg-indigo-50"
+                            }`}
                             onClick={() => setMenuOpen(false)}
                           >
                             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,7 +115,11 @@ export default function Header() {
                           {userRole === "admin" && (
                             <Link
                               href="/admin"
-                              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 transition-colors"
+                              className={`flex items-center px-4 py-2 text-sm transition-colors ${
+                                pathname?.startsWith("/admin")
+                                  ? "bg-indigo-50 text-indigo-700 font-medium"
+                                  : "text-gray-700 hover:bg-indigo-50"
+                              }`}
                               onClick={() => setMenuOpen(false)}
                             >
                               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
