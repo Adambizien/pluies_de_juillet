@@ -7,6 +7,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { UserInfo } from "./UserInfo";
+import { Registration } from "./Registration";
+import { UserProgram } from "./UserProgram";
 
 export enum UserRole {
   USER = "user",
@@ -33,14 +36,14 @@ export class User {
   @UpdateDateColumn({ type: "timestamptz" })
   updatedAt!: Date;
 
-  @OneToOne(() => require("./UserInfo").UserInfo, (userInfo: any) => userInfo.user, {
+  @OneToOne(() => UserInfo, (userInfo: UserInfo) => userInfo.user, {
     cascade: true,
   })
-  userInfo?: any;
+  userInfo?: UserInfo;
 
-  @OneToMany(() => require("./Registration").Registration, (registration: any) => registration.user)
-  registrations?: any[];
+  @OneToMany(() => Registration, (registration: Registration) => registration.user)
+  registrations?: Registration[];
 
-  @OneToMany(() => require("./UserProgram").UserProgram, (userProgram: any) => userProgram.user)
-  programs?: any[];
+  @OneToMany(() => UserProgram, (userProgram: UserProgram) => userProgram.user)
+  programs?: UserProgram[];
 }

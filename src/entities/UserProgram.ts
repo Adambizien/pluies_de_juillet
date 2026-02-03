@@ -7,24 +7,24 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import type { User } from "./User";
-import type { Conference } from "./Conference";
+import { User } from "./User";
+import { Conference } from "./Conference";
 
 @Entity({ name: "user_programs" })
 export class UserProgram {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @ManyToOne(() => require("./User").User, (user: any) => user.programs)
+  @ManyToOne(() => User, (user: User) => user.programs)
   @JoinColumn({ name: "userId" })
-  user!: any;
+  user!: User;
 
   @Column({ type: "integer" })
   userId!: number;
 
-  @ManyToOne(() => require("./Conference").Conference, (conference: any) => conference.userPrograms)
+  @ManyToOne(() => Conference, (conference: Conference) => conference.userPrograms)
   @JoinColumn({ name: "conferenceId" })
-  conference!: any;
+  conference!: Conference;
 
   @Column({ type: "integer" })
   conferenceId!: number;

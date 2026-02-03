@@ -7,24 +7,24 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import type { User } from "./User";
-import type { Event } from "./Event";
+import { User } from "./User";
+import { Event } from "./Event";
 
 @Entity({ name: "registrations" })
 export class Registration {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @ManyToOne(() => require("./User").User, (user: any) => user.registrations)
+  @ManyToOne(() => User, (user: User) => user.registrations)
   @JoinColumn({ name: "userId" })
-  user!: any;
+  user!: User;
 
   @Column({ type: "integer" })
   userId!: number;
 
-  @ManyToOne(() => require("./Event").Event, (event: any) => event.registrations)
+  @ManyToOne(() => Event, (event: Event) => event.registrations)
   @JoinColumn({ name: "eventId" })
-  event!: any;
+  event!: Event;
 
   @Column({ type: "integer" })
   eventId!: number;

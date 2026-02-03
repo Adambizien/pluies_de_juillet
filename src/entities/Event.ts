@@ -8,8 +8,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import type { EventCategory } from "./EventCategory";
-import type { Conference } from "./Conference";
+import { EventCategory } from "./EventCategory";
+import { Conference } from "./Conference";
+import { Registration } from "./Registration";
 
 @Entity({ name: "events" })
 export class Event {
@@ -31,9 +32,9 @@ export class Event {
   @Column({ type: "boolean", default: true })
   isVisible!: boolean;
 
-  @ManyToOne(() => require("./EventCategory").EventCategory, (category: any) => category.events)
+  @ManyToOne(() => EventCategory, (category: EventCategory) => category.events)
   @JoinColumn({ name: "eventCategoryId" })
-  category!: any;
+  category!: EventCategory;
 
   @Column({ type: "integer" })
   eventCategoryId!: number;
@@ -44,9 +45,9 @@ export class Event {
   @UpdateDateColumn({ type: "timestamptz" })
   updatedAt!: Date;
 
-  @OneToMany(() => require("./Conference").Conference, (conference: any) => conference.event)
-  conferences?: any[];
+  @OneToMany(() => Conference, (conference: Conference) => conference.event)
+  conferences?: Conference[];
 
-  @OneToMany(() => require("./Registration").Registration, (registration: any) => registration.event)
-  registrations?: any[];
+  @OneToMany(() => Registration, (registration: Registration) => registration.event)
+  registrations?: Registration[];
 }

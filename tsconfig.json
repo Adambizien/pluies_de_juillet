@@ -10,7 +10,7 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    "emitDecoratorMetadata": false,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",

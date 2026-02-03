@@ -8,17 +8,18 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import type { Event } from "./Event";
-import type { ConferenceCategory } from "./ConferenceCategory";
+import { Event } from "./Event";
+import { ConferenceCategory } from "./ConferenceCategory";
+import { UserProgram } from "./UserProgram";
 
 @Entity({ name: "conferences" })
 export class Conference {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @ManyToOne(() => require("./Event").Event, (event: any) => event.conferences)
+  @ManyToOne(() => Event, (event: Event) => event.conferences)
   @JoinColumn({ name: "eventId" })
-  event!: any;
+  event!: Event;
 
   @Column({ type: "integer" })
   eventId!: number;
@@ -35,9 +36,9 @@ export class Conference {
   @Column({ type: "timestamptz" })
   endDatetime!: Date;
 
-  @ManyToOne(() => require("./ConferenceCategory").ConferenceCategory, (category: any) => category.conferences)
+  @ManyToOne(() => ConferenceCategory, (category: ConferenceCategory) => category.conferences)
   @JoinColumn({ name: "conferenceCategoryId" })
-  category!: any;
+  category!: ConferenceCategory;
 
   @Column({ type: "integer" })
   conferenceCategoryId!: number;
@@ -51,6 +52,6 @@ export class Conference {
   @UpdateDateColumn({ type: "timestamptz" })
   updatedAt!: Date;
 
-  @OneToMany(() => require("./UserProgram").UserProgram, (userProgram: any) => userProgram.conference)
-  userPrograms?: any[];
+  @OneToMany(() => UserProgram, (userProgram: UserProgram) => userProgram.conference)
+  userPrograms?: UserProgram[];
 }

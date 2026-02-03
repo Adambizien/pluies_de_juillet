@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import type { Event } from "./Event";
+import { Event } from "./Event";
 
 @Entity({ name: "event_categories" })
 export class EventCategory {
@@ -22,6 +22,6 @@ export class EventCategory {
   @UpdateDateColumn({ type: "timestamptz" })
   updatedAt!: Date;
 
-  @OneToMany(() => require("./Event").Event, (event: any) => event.category)
-  events?: any[];
+  @OneToMany(() => Event, (event: Event) => event.category)
+  events?: Event[];
 }
