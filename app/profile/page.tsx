@@ -2,7 +2,6 @@
 
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface UserInfo {
