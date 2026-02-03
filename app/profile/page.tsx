@@ -141,18 +141,6 @@ export default function Profile() {
                 <p className="text-lg font-semibold text-gray-900 capitalize">{String((session?.user as Record<string, unknown>)?.role || "Utilisateur")}</p>
               </div>
             </div>
-
-            <div className="mt-8 border-t border-gray-200 pt-6">
-              <Link
-                href="/"
-                className="inline-flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors"
-              >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Retour à l&apos;accueil
-              </Link>
-            </div>
           </div>
         </div>
       </div>

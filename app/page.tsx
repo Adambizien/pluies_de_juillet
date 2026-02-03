@@ -14,7 +14,7 @@ export default function Home() {
             Bienvenue sur Pluies de Juillet
           </h2>
           <p className="text-lg text-gray-600 mb-8">
-            Plateforme de gestion d'événements et de conférences
+            Plateforme de gestion d&apos;événements et de conférences
           </p>
 
           {status === "unauthenticated" && (

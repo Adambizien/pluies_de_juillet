@@ -17,22 +17,22 @@ export default function Header() {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
   useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await fetch("/api/user/info");
+        if (response.ok) {
+          const data = await response.json();
+          setUserInfo(data);
+        }
+      } catch (error) {
+        console.error("Erreur récupération infos:", error);
+      }
+    };
+
     if (status === "authenticated") {
       fetchUserInfo();
     }
   }, [status]);
-
-  const fetchUserInfo = async () => {
-    try {
-      const response = await fetch("/api/user/info");
-      if (response.ok) {
-        const data = await response.json();
-        setUserInfo(data);
-      }
-    } catch (error) {
-      console.error("Erreur récupération infos:", error);
-    }
-  };
 
   return (
     <header className="bg-white shadow">

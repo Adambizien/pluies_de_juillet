@@ -5,7 +5,6 @@ import {
   JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
-  RelationId,
   UpdateDateColumn,
 } from "typeorm";
 import { User } from "./User";
