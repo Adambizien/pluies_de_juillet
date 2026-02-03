@@ -3,7 +3,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { User } from "@/src/entities/User";
 import * as bcrypt from "bcryptjs";
 
-// Fonction pour initialiser et obtenir la repo utilisateur
 async function getUserRepository() {
   const { AppDataSource } = await import("@/src/data-source");
   if (!AppDataSource.isInitialized) {
@@ -58,22 +57,30 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = (user as unknown as Record<string, unknown>).id as string;
         token.role = (user as unknown as Record<string, unknown>).role as string;
+        token.email = user.email;
       }
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
-        (session.user as unknown as Record<string, unknown>).id = token.id as string;
-        (session.user as unknown as Record<string, unknown>).role = token.role as string;
+      if (session.user && token) {
+        (session.user as unknown as Record<string, unknown>).id = token.id;
+        (session.user as unknown as Record<string, unknown>).role = token.role;
+        session.user.email = token.email as string;
       }
       return session;
     },
   },
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 jours
+  },
   pages: {
-    signIn: "/auth/signin",
-    error: "/auth/error",
+    signIn: "/login",
+    error: "/login",
   },
   secret: process.env.NEXTAUTH_SECRET,
+  debug: true,
+  useSecureCookies: false,
 };
 
 const handler = NextAuth(authOptions);

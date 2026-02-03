@@ -2,11 +2,37 @@
 
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+interface UserInfo {
+  firstname: string;
+  lastname: string | null;
+  phone: string | null;
+  dateOfBirth: string | null;
+}
 
 export default function Home() {
   const { data: session, status } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      fetchUserInfo();
+    }
+  }, [status]);
+
+  const fetchUserInfo = async () => {
+    try {
+      const response = await fetch("/api/user/info");
+      if (response.ok) {
+        const data = await response.json();
+        setUserInfo(data);
+      }
+    } catch (error) {
+      console.error("Erreur récupération infos:", error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
@@ -24,10 +50,7 @@ export default function Home() {
                   <div className="text-sm hidden md:block">
                     <p className="text-gray-700">
                       Bienvenue, <span className="font-semibold">
-                        {String([
-                          (session?.user as Record<string, unknown>)?.firstname,
-                          (session?.user as Record<string, unknown>)?.lastname,
-                        ].filter(Boolean).join(" ") || session?.user?.email)}
+                        {userInfo ? `${userInfo.firstname} ${userInfo.lastname || ""}`.trim() : session?.user?.email}
                       </span>
                     </p>
                     <p className="text-xs text-green-600 font-medium">✓ Connecté</p>
@@ -53,10 +76,7 @@ export default function Home() {
                         <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl z-20 border border-gray-200">
                           <div className="p-4 border-b border-gray-200">
                             <p className="text-sm font-semibold text-gray-900">
-                              {String([
-                                (session?.user as Record<string, unknown>)?.firstname,
-                                (session?.user as Record<string, unknown>)?.lastname,
-                              ].filter(Boolean).join(" "))}
+                              {userInfo ? `${userInfo.firstname} ${userInfo.lastname || ""}`.trim() : "Chargement..."}
                             </p>
                             <p className="text-xs text-gray-500">{session?.user?.email}</p>
                           </div>

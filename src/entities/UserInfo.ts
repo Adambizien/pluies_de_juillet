@@ -15,12 +15,12 @@ export class UserInfo {
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @Column({ type: "int", nullable: true })
+  userId!: number;
+
   @OneToOne(() => User, (user) => user.userInfo, { onDelete: "CASCADE" })
   @JoinColumn({ name: "userId" })
   user!: User;
-
-  @RelationId((userInfo: UserInfo) => userInfo.user)
-  userId!: number;
 
   @Column({ type: "varchar" })
   firstname!: string;
