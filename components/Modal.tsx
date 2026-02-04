@@ -26,7 +26,7 @@ export default function Modal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-        <div className="relative w-full max-w-lg mx-4 rounded-xl bg-white p-8 shadow-2xl border border-gray-200">
+        <div className={`relative w-full ${widthClasses[maxWidth]} mx-4 rounded-xl bg-white p-8 shadow-2xl border border-gray-200`}>
             <button
             onClick={onClose}
             aria-label="Fermer"

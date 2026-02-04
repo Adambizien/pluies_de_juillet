@@ -77,3 +77,30 @@ Au démarrage, tu devrais voir :
 ```
 
 Les tables `users` et `user_info` seront créées automatiquement.
+
+## 👨‍💼 Créer un compte administrateur
+
+Pour créer un compte administrateur directement via la CLI :
+
+```bash
+npm run create-admin
+```
+
+Le script te demandera interactivement :
+- **Email** : L'adresse email du compte admin
+- **Mot de passe** : Au minimum 12 caractères (1 majuscule, 1 minuscule, 1 chiffre, 1 caractère spécial)
+- **Prénom** : Le prénom de l'administrateur
+- **Nom** : Le nom de l'administrateur (optionnel)
+- **Téléphone** : Format français (06/07 XX XX XX XX ou +33 6/7 XX XX XX XX) (optionnel)
+- **Date de naissance** : Format YYYY-MM-DD (optionnel)
+
+**Exemple :**
+```
+Email: admin@example.com
+Mot de passe: MyPassword123!@#
+Prénom: Jean
+Nom: Dupont
+Téléphone: 06 12 34 56 78
+Date de naissance: 1990-05-15
+✅ Compte administrateur créé avec succès
+```

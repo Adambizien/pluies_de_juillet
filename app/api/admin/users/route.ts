@@ -1,7 +1,6 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/src/auth";
 import { User } from "@/src/entities/User";
-import { UserInfo } from "@/src/entities/UserInfo";
 
 async function getUserRepository() {
   const { AppDataSource } = await import("@/src/data-source");
@@ -9,14 +8,6 @@ async function getUserRepository() {
     await AppDataSource.initialize();
   }
   return AppDataSource.getRepository(User);
-}
-
-async function getUserInfoRepository() {
-  const { AppDataSource } = await import("@/src/data-source");
-  if (!AppDataSource.isInitialized) {
-    await AppDataSource.initialize();
-  }
-  return AppDataSource.getRepository(UserInfo);
 }
 
 export async function GET() {
