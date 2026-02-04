@@ -51,9 +51,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
     }
 
-    const { title, description, startDate, endDate, eventCategoryId, isVisible } = await req.json();
+    const { title, description, startDate, endDate, eventCategoryId, isVisible, price } = await req.json();
 
-    if (!title || !description || !startDate || !endDate || !eventCategoryId) {
+    if (!title || !description || !startDate || !endDate || !eventCategoryId || price === undefined) {
       return NextResponse.json(
         { error: "Tous les champs sont requis" },
         { status: 400 }
@@ -69,6 +69,7 @@ export async function POST(req: NextRequest) {
       endDate: new Date(endDate),
       eventCategoryId: parseInt(eventCategoryId),
       isVisible: isVisible !== undefined ? isVisible : true,
+      price: parseInt(price),
     });
 
     const savedEvent = await eventRepository.save(newEvent);
@@ -93,7 +94,7 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
     }
 
-    const { id, title, description, startDate, endDate, eventCategoryId, isVisible } = await req.json();
+    const { id, title, description, startDate, endDate, eventCategoryId, isVisible, price } = await req.json();
 
     if (!id) {
       return NextResponse.json(
@@ -121,6 +122,7 @@ export async function PATCH(req: NextRequest) {
     if (endDate) event.endDate = new Date(endDate);
     if (eventCategoryId) event.eventCategoryId = parseInt(eventCategoryId);
     if (isVisible !== undefined) event.isVisible = isVisible;
+    if (price !== undefined) event.price = parseInt(price);
 
     const updatedEvent = await eventRepository.save(event);
 

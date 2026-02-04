@@ -32,6 +32,7 @@ interface Event {
   endDate: string;
   category: EventCategory;
   isVisible: boolean;
+  price: number;
   conferences?: Conference[];
 }
 
@@ -57,6 +58,7 @@ export default function EventsPage() {
     endDate: "",
     eventCategoryId: "",
     isVisible: true,
+    price: "0.00",
   });
   
   const [conferenceForm, setConferenceForm] = useState({
@@ -103,6 +105,7 @@ export default function EventsPage() {
         endDate: new Date(event.endDate).toISOString().slice(0, 16),
         eventCategoryId: event.category.id.toString(),
         isVisible: event.isVisible,
+        price: (event.price / 100).toFixed(2),
       });
     } else {
       setSelectedEvent(null);
@@ -113,6 +116,7 @@ export default function EventsPage() {
         endDate: "",
         eventCategoryId: "",
         isVisible: true,
+        price: "0.00",
       });
     }
     setError("");
@@ -154,9 +158,12 @@ export default function EventsPage() {
     try {
       const url = "/api/admin/events";
       const method = selectedEvent ? "PATCH" : "POST";
+      
+      const priceInCents = Math.round(parseFloat(eventForm.price) * 100);
+      
       const body = selectedEvent
-        ? { id: selectedEvent.id, ...eventForm }
-        : eventForm;
+        ? { id: selectedEvent.id, ...eventForm, price: priceInCents }
+        : { ...eventForm, price: priceInCents };
 
       const response = await fetch(url, {
         method,
@@ -285,6 +292,7 @@ export default function EventsPage() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Catégorie</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date de début</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date de fin</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Prix</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Visible</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
                 </tr>
@@ -325,6 +333,9 @@ export default function EventsPage() {
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-500">
                         {new Date(event.endDate).toLocaleString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-900 font-medium">
+                        {(event.price / 100).toFixed(2)} €
                       </td>
                       <td className="px-6 py-4 text-sm">
                         <span className={`px-2 py-1 rounded-full text-xs ${event.isVisible ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}>
@@ -378,6 +389,7 @@ export default function EventsPage() {
                               minute: "2-digit" 
                             })}
                           </td>
+                          <td className="px-6 py-3 text-sm text-gray-400">—</td>
                           <td className="px-6 py-3 text-sm">
                             <span className={`px-2 py-1 rounded-full text-xs ${conf.isVisible ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}>
                               {conf.isVisible ? "Oui" : "Non"}
@@ -481,6 +493,21 @@ export default function EventsPage() {
                 required
               />
             </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Prix (€) <span className="text-red-600">*</span>
+            </label>
+            <input
+              type="number"
+              step="0.01"
+              value={eventForm.price}
+              onChange={(e) => setEventForm({ ...eventForm, price: e.target.value })}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-gray-900"
+              min="0"
+              required
+            />
           </div>
 
           <div className="flex items-center">

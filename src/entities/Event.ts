@@ -32,6 +32,9 @@ export class Event {
   @Column({ type: "boolean", default: true })
   isVisible!: boolean;
 
+  @Column({ type: "integer" })
+  price!: number;
+
   @ManyToOne(() => EventCategory, (category: EventCategory) => category.events)
   @JoinColumn({ name: "eventCategoryId" })
   category!: EventCategory;
