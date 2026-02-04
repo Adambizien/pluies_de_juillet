@@ -31,7 +31,6 @@ interface Event {
 
 export default function EventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
-  const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   
   const [eventCategories, setEventCategories] = useState<EventCategory[]>([]);
@@ -56,7 +55,6 @@ export default function EventsPage() {
         });
         
         setEvents(upcomingEvents);
-        setFilteredEvents(upcomingEvents);
         setEventCategories(eventCategoriesData);
         setConferenceCategories(conferenceCategoriesData);
         setLoading(false);
@@ -64,7 +62,8 @@ export default function EventsPage() {
       .catch(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
+  // Calculer les événements filtrés directement
+  const filteredEvents = (() => {
     let filtered = [...events];
 
     if (selectedEventCategory) {
@@ -97,8 +96,8 @@ export default function EventsPage() {
       new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
     );
 
-    setFilteredEvents(filtered);
-  }, [events, selectedEventCategory, selectedConferenceCategory, startDateFilter, endDateFilter]);
+    return filtered;
+  })();
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("fr-FR", {

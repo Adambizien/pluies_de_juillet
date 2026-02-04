@@ -1,6 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -34,12 +35,11 @@ interface Registration {
 }
 
 export default function PlanningPage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [selectedConferences, setSelectedConferences] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
   const [savingEventId, setSavingEventId] = useState<number | null>(null);
   const [savedEventId, setSavedEventId] = useState<number | null>(null);
 
@@ -64,7 +64,7 @@ export default function PlanningPage() {
         const programResponse = await fetch("/api/user/program");
         if (programResponse.ok) {
           const programData = await programResponse.json();
-          setSelectedConferences(programData.map((p: any) => p.conferenceId));
+          setSelectedConferences(programData.map((p: { conferenceId: number }) => p.conferenceId));
         }
       }
     } catch (error) {
@@ -94,11 +94,11 @@ export default function PlanningPage() {
     setSavingEventId(eventId);
     setSavedEventId(null);
     
-    if ((window as any).saveTimeout) {
-      clearTimeout((window as any).saveTimeout);
+    if ((window as Window & { saveTimeout?: NodeJS.Timeout }).saveTimeout) {
+      clearTimeout((window as Window & { saveTimeout?: NodeJS.Timeout }).saveTimeout);
     }
 
-    (window as any).saveTimeout = setTimeout(async () => {
+    (window as Window & { saveTimeout?: NodeJS.Timeout }).saveTimeout = setTimeout(async () => {
       try {
         const response = await fetch("/api/user/program", {
           method: "POST",
@@ -158,12 +158,12 @@ export default function PlanningPage() {
             <p className="text-gray-600 mb-6">
               Vous devez vous inscrire à un événement avant de pouvoir planifier vos conférences.
             </p>
-            <a
+            <Link
               href="/events"
               className="inline-block px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors"
             >
               Voir les événements
-            </a>
+            </Link>
           </div>
         </div>
       </div>

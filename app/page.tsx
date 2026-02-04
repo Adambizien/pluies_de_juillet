@@ -18,7 +18,7 @@ interface Event {
 }
 
 export default function Home() {
-  const { status } = useSession();
+  useSession();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
 

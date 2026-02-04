@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/auth";
 import { Registration } from "@/src/entities/Registration";
@@ -12,7 +12,7 @@ async function getRepository<T>(entity: new () => T) {
   return AppDataSource.getRepository(entity);
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.email) {
