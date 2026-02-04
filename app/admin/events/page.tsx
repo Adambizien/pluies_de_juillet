@@ -23,6 +23,8 @@ interface Conference {
   endDatetime: string;
   category: ConferenceCategory;
   isVisible: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 interface Event {
@@ -35,6 +37,8 @@ interface Event {
   isVisible: boolean;
   price: number;
   conferences?: Conference[];
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export default function EventsPage() {
@@ -293,6 +297,8 @@ export default function EventsPage() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date de fin</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Prix</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Visible</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Créé le</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Modifié le</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
                 </tr>
               </thead>
@@ -340,6 +346,16 @@ export default function EventsPage() {
                         <span className={`px-2 py-1 rounded-full text-xs ${event.isVisible ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}>
                           {event.isVisible ? "Oui" : "Non"}
                         </span>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-500">
+                        {event.createdAt
+                          ? new Date(event.createdAt).toLocaleDateString("fr-FR")
+                          : "Non renseigné"}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-500">
+                        {event.updatedAt
+                          ? new Date(event.updatedAt).toLocaleDateString("fr-FR")
+                          : "Non renseigné"}
                       </td>
                       <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
                         <DropdownMenu
@@ -396,6 +412,16 @@ export default function EventsPage() {
                             <span className={`px-2 py-1 rounded-full text-xs ${conf.isVisible ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}>
                               {conf.isVisible ? "Oui" : "Non"}
                             </span>
+                          </td>
+                          <td className="px-6 py-3 text-sm text-gray-500">
+                            {conf.createdAt
+                              ? new Date(conf.createdAt).toLocaleDateString("fr-FR")
+                              : "Non renseigné"}
+                          </td>
+                          <td className="px-6 py-3 text-sm text-gray-500">
+                            {conf.updatedAt
+                              ? new Date(conf.updatedAt).toLocaleDateString("fr-FR")
+                              : "Non renseigné"}
                           </td>
                           <td className="px-6 py-3">
                             <DropdownMenu

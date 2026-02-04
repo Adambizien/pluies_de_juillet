@@ -11,6 +11,7 @@ interface User {
   email: string;
   role: string;
   createdAt: string;
+  updatedAt: string;
   firstname?: string;
   lastname?: string;
   phone?: string;
@@ -169,6 +170,9 @@ export default function UsersPage() {
                 Date d&apos;inscription
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Date de mise à jour
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
@@ -208,6 +212,10 @@ export default function UsersPage() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {new Date(user.createdAt).toLocaleDateString("fr-FR")}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {new Date(user.updatedAt).toLocaleDateString("fr-FR")}
+                  
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <DropdownMenu

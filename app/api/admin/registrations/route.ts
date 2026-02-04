@@ -96,3 +96,44 @@ export async function POST(req: Request) {
     );
   }
 }
+
+export async function DELETE(req: Request) {
+  try {
+    if (!AppDataSource.isInitialized) {
+      await AppDataSource.initialize();
+    }
+
+    const { searchParams } = new URL(req.url);
+    const registrationId = searchParams.get("registrationId");
+
+    if (!registrationId) {
+      return Response.json(
+        { error: "L'ID de l'inscription est requis" },
+        { status: 400 }
+      );
+    }
+
+    const registrationRepository = AppDataSource.getRepository(Registration);
+
+    const registration = await registrationRepository.findOne({
+      where: { id: parseInt(registrationId) },
+    });
+
+    if (!registration) {
+      return Response.json(
+        { error: "Inscription non trouvée" },
+        { status: 404 }
+      );
+    }
+
+    await registrationRepository.remove(registration);
+
+    return Response.json({ message: "Inscription supprimée avec succès" });
+  } catch (error) {
+    console.error("Erreur lors de la suppression de l'inscription:", error);
+    return Response.json(
+      { error: "Erreur lors de la suppression de l'inscription" },
+      { status: 500 }
+    );
+  }
+}
