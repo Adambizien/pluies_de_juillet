@@ -170,10 +170,8 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    // Supprimer d'abord toutes les conférences associées
     await conferenceRepository.delete({ eventId: parseInt(id) });
-    
-    // Puis supprimer l'événement
+
     await eventRepository.remove(event);
 
     return NextResponse.json({ message: "Événement supprimé" }, { status: 200 });

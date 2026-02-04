@@ -1,8 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import Modal from "@/components/Modal";
 import Select from "@/components/Select";
+import DropdownMenu from "@/components/DropdownMenu";
 
 interface EventCategory {
   id: number;
@@ -43,14 +45,12 @@ export default function EventsPage() {
   const [loading, setLoading] = useState(true);
   const [expandedEventIds, setExpandedEventIds] = useState<number[]>([]);
   
-  // Modal states
   const [showEventModal, setShowEventModal] = useState(false);
   const [showConferenceModal, setShowConferenceModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [selectedConference, setSelectedConference] = useState<Conference | null>(null);
   const [selectedEventForConference, setSelectedEventForConference] = useState<number | null>(null);
   
-  // Form states
   const [eventForm, setEventForm] = useState({
     title: "",
     description: "",
@@ -342,25 +342,28 @@ export default function EventsPage() {
                           {event.isVisible ? "Oui" : "Non"}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-sm font-medium space-x-2" onClick={(e) => e.stopPropagation()}>
-                        <button
-                          onClick={() => openConferenceModal(event.id)}
-                          className="text-green-600 hover:text-green-900"
-                        >
-                          + Conf
-                        </button>
-                        <button
-                          onClick={() => openEventModal(event)}
-                          className="text-indigo-600 hover:text-indigo-900"
-                        >
-                          Modifier
-                        </button>
-                        <button
-                          onClick={() => handleDeleteEvent(event.id)}
-                          className="text-red-600 hover:text-red-900"
-                        >
-                          Supprimer
-                        </button>
+                      <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
+                        <DropdownMenu
+                          actions={[
+                            {
+                              label: "Voir la page",
+                              onClick: () => window.open(`/events/${event.id}`, '_blank')
+                            },
+                            {
+                              label: "Ajouter une conférence",
+                              onClick: () => openConferenceModal(event.id)
+                            },
+                            {
+                              label: "Modifier",
+                              onClick: () => openEventModal(event)
+                            },
+                            {
+                              label: "Supprimer",
+                              onClick: () => handleDeleteEvent(event.id),
+                              className: "text-red-600"
+                            }
+                          ]}
+                        />
                       </td>
                     </tr>
                     {expandedEventIds.includes(event.id) && event.conferences && event.conferences.length > 0 && (
@@ -395,19 +398,20 @@ export default function EventsPage() {
                               {conf.isVisible ? "Oui" : "Non"}
                             </span>
                           </td>
-                          <td className="px-6 py-3 text-sm font-medium space-x-2">
-                            <button
-                              onClick={() => openConferenceModal(event.id, conf)}
-                              className="text-indigo-600 hover:text-indigo-900"
-                            >
-                              Modifier
-                            </button>
-                            <button
-                              onClick={() => handleDeleteConference(conf.id)}
-                              className="text-red-600 hover:text-red-900"
-                            >
-                              Supprimer
-                            </button>
+                          <td className="px-6 py-3">
+                            <DropdownMenu
+                              actions={[
+                                {
+                                  label: "Modifier",
+                                  onClick: () => openConferenceModal(event.id, conf)
+                                },
+                                {
+                                  label: "Supprimer",
+                                  onClick: () => handleDeleteConference(conf.id),
+                                  className: "text-red-600"
+                                }
+                              ]}
+                            />
                           </td>
                         </tr>
                       ))

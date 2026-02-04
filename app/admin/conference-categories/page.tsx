@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Modal from "@/components/Modal";
+import DropdownMenu from "@/components/DropdownMenu";
 
 interface ConferenceCategory {
   id: number;
@@ -200,21 +201,20 @@ export default function ConferenceCategoriesPage() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {new Date(category.createdAt).toLocaleDateString("fr-FR")}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">
-                    <button
-                      onClick={() => openEditModal(category)}
-                      disabled={actionLoading}
-                      className="text-indigo-600 hover:text-indigo-900 disabled:opacity-50"
-                    >
-                      Modifier
-                    </button>
-                    <button
-                      onClick={() => handleDelete(category)}
-                      disabled={actionLoading}
-                      className="text-red-600 hover:text-red-900 disabled:opacity-50"
-                    >
-                      Supprimer
-                    </button>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <DropdownMenu
+                      actions={[
+                        {
+                          label: "Modifier",
+                          onClick: () => openEditModal(category)
+                        },
+                        {
+                          label: "Supprimer",
+                          onClick: () => handleDelete(category),
+                          className: "text-red-600"
+                        }
+                      ]}
+                    />
                   </td>
                 </tr>
               ))}

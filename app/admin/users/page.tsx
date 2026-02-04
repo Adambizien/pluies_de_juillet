@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useSession, signOut } from "next-auth/react";
 import Modal from "@/components/Modal";
 import Select from "@/components/Select";
+import DropdownMenu from "@/components/DropdownMenu";
 
 interface User {
   id: number;
@@ -208,21 +209,20 @@ export default function UsersPage() {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {new Date(user.createdAt).toLocaleDateString("fr-FR")}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button
-                    onClick={() => openModal(user)}
-                    disabled={actionLoading}
-                    className="text-indigo-600 hover:text-indigo-900 mr-4 disabled:opacity-50"
-                  >
-                    Modifier
-                  </button>
-                  <button
-                    onClick={() => handleDelete(user)}
-                    disabled={actionLoading}
-                    className="text-red-600 hover:text-red-900 disabled:opacity-50"
-                  >
-                    Supprimer
-                  </button>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <DropdownMenu
+                    actions={[
+                      {
+                        label: "Modifier le rôle",
+                        onClick: () => openModal(user)
+                      },
+                      {
+                        label: "Supprimer",
+                        onClick: () => handleDelete(user),
+                        className: "text-red-600"
+                      }
+                    ]}
+                  />
                 </td>
               </tr>
             ))}

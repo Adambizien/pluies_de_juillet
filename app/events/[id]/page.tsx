@@ -1,0 +1,134 @@
+import { notFound } from "next/navigation";
+import { Event } from "@/src/entities/Event";
+
+interface EventCategory {
+  id: number;
+  name: string;
+}
+
+interface ConferenceCategory {
+  id: number;
+  name: string;
+}
+
+interface Conference {
+  id: number;
+  title: string;
+  description: string;
+  startDatetime: string;
+  endDatetime: string;
+  category: ConferenceCategory;
+  isVisible: boolean;
+}
+
+interface EventDetail {
+  id: number;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  category: EventCategory;
+  isVisible: boolean;
+  price: number;
+  conferences?: Conference[];
+}
+
+async function getRepository<T>(entity: new () => T) {
+  const { AppDataSource } = await import("@/src/data-source");
+  if (!AppDataSource.isInitialized) {
+    await AppDataSource.initialize();
+  }
+  return AppDataSource.getRepository(entity);
+}
+
+async function fetchEvent(id: string): Promise<EventDetail | null> {
+  const eventId = parseInt(id);
+  if (Number.isNaN(eventId)) return null;
+
+  const eventRepository = await getRepository(Event);
+  const event = await eventRepository.findOne({
+    where: { id: eventId },
+    relations: ["category", "conferences", "conferences.category"],
+  });
+
+  if (!event) return null;
+
+  if (event.conferences) {
+    event.conferences.sort((a: Conference, b: Conference) =>
+      new Date(a.startDatetime).getTime() - new Date(b.startDatetime).getTime()
+    );
+  }
+
+  return event as EventDetail;
+}
+
+function formatDateTime(value: string) {
+  return new Date(value).toLocaleString("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function formatPrice(cents: number) {
+  return (cents / 100).toLocaleString("fr-FR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
+export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> | { id: string } }) {
+  const resolvedParams = await params;
+  const event = await fetchEvent(resolvedParams.id);
+  if (!event) notFound();
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-5xl mx-auto px-6 py-10">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="px-3 py-1 rounded-full text-sm font-semibold bg-indigo-100 text-indigo-700">
+                {event.category.name}
+              </span>
+              <span className="text-sm text-gray-500">
+                {formatDateTime(event.startDate)} → {formatDateTime(event.endDate)}
+              </span>
+              <span className="ml-auto text-lg font-bold text-gray-900">
+                {formatPrice(event.price)} €
+              </span>
+            </div>
+            <h1 className="text-3xl font-bold text-gray-900">{event.title}</h1>
+            <p className="text-gray-700 leading-relaxed">{event.description}</p>
+          </div>
+        </div>
+
+        <div className="mt-8">
+          <h2 className="text-2xl font-semibold text-gray-900">Conférences</h2>
+          {event.conferences && event.conferences.length > 0 ? (
+            <div className="mt-4 grid gap-4">
+              {event.conferences.map((conf) => (
+                <div key={conf.id} className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
+                      {conf.category.name}
+                    </span>
+                    <span className="text-sm text-gray-500">
+                      {formatDateTime(conf.startDatetime)} → {formatDateTime(conf.endDatetime)}
+                    </span>
+                  </div>
+                  <h3 className="mt-2 text-xl font-semibold text-gray-900">{conf.title}</h3>
+                  <p className="mt-1 text-gray-700 leading-relaxed">{conf.description}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="mt-3 text-gray-500">Aucune conférence annoncée pour cet événement.</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

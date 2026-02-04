@@ -166,11 +166,9 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    // Supprimer d'abord toutes les conférences associées
     const conferenceRepository = await getRepository(Conference);
     await conferenceRepository.delete({ conferenceCategoryId: parseInt(id) });
 
-    // Puis supprimer la catégorie
     await categoryRepository.remove(category);
 
     return NextResponse.json({ message: "Catégorie supprimée" }, { status: 200 });

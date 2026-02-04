@@ -167,7 +167,6 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    // Supprimer d'abord toutes les conférences des événements associés
     const eventRepository = await getRepository(Event);
     const conferenceRepository = await getRepository(Conference);
     
@@ -180,7 +179,6 @@ export async function DELETE(req: NextRequest) {
       await eventRepository.remove(event);
     }
 
-    // Puis supprimer la catégorie
     await categoryRepository.remove(category);
 
     return NextResponse.json({ message: "Catégorie supprimée" }, { status: 200 });
