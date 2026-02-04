@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { useEffect, useState } from "react";
 import Modal from "@/components/Modal";
 
 interface ConferenceCategory {
@@ -12,7 +11,6 @@ interface ConferenceCategory {
 }
 
 export default function ConferenceCategoriesPage() {
-  const { data: session } = useSession();
   const [categories, setCategories] = useState<ConferenceCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<ConferenceCategory | null>(null);
@@ -20,10 +18,6 @@ export default function ConferenceCategoriesPage() {
   const [actionLoading, setActionLoading] = useState(false);
   const [categoryName, setCategoryName] = useState<string>("");
   const [error, setError] = useState<string>("");
-
-  const handleLogout = useCallback(async () => {
-    await signOut({ redirect: true, callbackUrl: "/login" });
-  }, []);
 
   const fetchCategories = async () => {
     try {

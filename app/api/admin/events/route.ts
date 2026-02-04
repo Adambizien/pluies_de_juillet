@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/src/auth";
-import { ConferenceCategory } from "@/src/entities/ConferenceCategory";
+import { Event } from "@/src/entities/Event";
 import { Conference } from "@/src/entities/Conference";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -25,14 +25,15 @@ export async function GET() {
       return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
     }
 
-    const categoryRepository = await getRepository(ConferenceCategory);
-    const categories = await categoryRepository.find({
-      order: { createdAt: "DESC" },
+    const eventRepository = await getRepository(Event);
+    const events = await eventRepository.find({
+      relations: ["category", "conferences", "conferences.category"],
+      order: { startDate: "DESC" },
     });
 
-    return NextResponse.json(categories, { status: 200 });
+    return NextResponse.json(events, { status: 200 });
   } catch (error) {
-    console.error("Erreur récupération catégories conférences:", error);
+    console.error("Erreur récupération événements:", error);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }
@@ -50,37 +51,31 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
     }
 
-    const { name } = await req.json();
+    const { title, description, startDate, endDate, eventCategoryId, isVisible } = await req.json();
 
-    if (!name || !name.trim()) {
+    if (!title || !description || !startDate || !endDate || !eventCategoryId) {
       return NextResponse.json(
-        { error: "Le nom de la catégorie est requis" },
+        { error: "Tous les champs sont requis" },
         { status: 400 }
       );
     }
 
-    const categoryRepository = await getRepository(ConferenceCategory);
+    const eventRepository = await getRepository(Event);
 
-    const existingCategory = await categoryRepository.findOne({
-      where: { name: name.trim() },
+    const newEvent = eventRepository.create({
+      title: title.trim(),
+      description: description.trim(),
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
+      eventCategoryId: parseInt(eventCategoryId),
+      isVisible: isVisible !== undefined ? isVisible : true,
     });
 
-    if (existingCategory) {
-      return NextResponse.json(
-        { error: "Cette catégorie existe déjà" },
-        { status: 409 }
-      );
-    }
+    const savedEvent = await eventRepository.save(newEvent);
 
-    const newCategory = categoryRepository.create({
-      name: name.trim(),
-    });
-
-    const savedCategory = await categoryRepository.save(newCategory);
-
-    return NextResponse.json(savedCategory, { status: 201 });
+    return NextResponse.json(savedEvent, { status: 201 });
   } catch (error) {
-    console.error("Erreur création catégorie conférence:", error);
+    console.error("Erreur création événement:", error);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }
@@ -98,34 +93,40 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
     }
 
-    const { id, name } = await req.json();
+    const { id, title, description, startDate, endDate, eventCategoryId, isVisible } = await req.json();
 
-    if (!id || !name || !name.trim()) {
+    if (!id) {
       return NextResponse.json(
-        { error: "L'ID et le nom sont requis" },
+        { error: "L'ID est requis" },
         { status: 400 }
       );
     }
 
-    const categoryRepository = await getRepository(ConferenceCategory);
+    const eventRepository = await getRepository(Event);
 
-    const category = await categoryRepository.findOne({
-      where: { id },
+    const event = await eventRepository.findOne({
+      where: { id: parseInt(id) },
     });
 
-    if (!category) {
+    if (!event) {
       return NextResponse.json(
-        { error: "Catégorie non trouvée" },
+        { error: "Événement non trouvé" },
         { status: 404 }
       );
     }
 
-    category.name = name.trim();
-    const updatedCategory = await categoryRepository.save(category);
+    if (title) event.title = title.trim();
+    if (description) event.description = description.trim();
+    if (startDate) event.startDate = new Date(startDate);
+    if (endDate) event.endDate = new Date(endDate);
+    if (eventCategoryId) event.eventCategoryId = parseInt(eventCategoryId);
+    if (isVisible !== undefined) event.isVisible = isVisible;
 
-    return NextResponse.json(updatedCategory, { status: 200 });
+    const updatedEvent = await eventRepository.save(event);
+
+    return NextResponse.json(updatedEvent, { status: 200 });
   } catch (error) {
-    console.error("Erreur modification catégorie conférence:", error);
+    console.error("Erreur modification événement:", error);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }
@@ -144,38 +145,38 @@ export async function DELETE(req: NextRequest) {
     }
 
     const { searchParams } = new URL(req.url);
-    const id = searchParams.get("categoryId");
+    const id = searchParams.get("eventId");
 
     if (!id) {
       return NextResponse.json(
-        { error: "L'ID de la catégorie est requis" },
+        { error: "L'ID est requis" },
         { status: 400 }
       );
     }
 
-    const categoryRepository = await getRepository(ConferenceCategory);
+    const eventRepository = await getRepository(Event);
+    const conferenceRepository = await getRepository(Conference);
 
-    const category = await categoryRepository.findOne({
+    const event = await eventRepository.findOne({
       where: { id: parseInt(id) },
     });
 
-    if (!category) {
+    if (!event) {
       return NextResponse.json(
-        { error: "Catégorie non trouvée" },
+        { error: "Événement non trouvé" },
         { status: 404 }
       );
     }
 
     // Supprimer d'abord toutes les conférences associées
-    const conferenceRepository = await getRepository(Conference);
-    await conferenceRepository.delete({ conferenceCategoryId: parseInt(id) });
+    await conferenceRepository.delete({ eventId: parseInt(id) });
+    
+    // Puis supprimer l'événement
+    await eventRepository.remove(event);
 
-    // Puis supprimer la catégorie
-    await categoryRepository.remove(category);
-
-    return NextResponse.json({ message: "Catégorie supprimée" }, { status: 200 });
+    return NextResponse.json({ message: "Événement supprimé" }, { status: 200 });
   } catch (error) {
-    console.error("Erreur suppression catégorie conférence:", error);
+    console.error("Erreur suppression événement:", error);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }

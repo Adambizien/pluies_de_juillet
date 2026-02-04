@@ -22,13 +22,13 @@ export default function Select({
   options,
   disabled = false,
   required = false,
-  placeholder,
+  placeholder = "Sélectionner une option",
 }: SelectProps) {
   return (
     <div className="mb-6">
       <label
         htmlFor={id}
-        className="block text-sm font-semibold text-gray-800 mb-2"
+        className="block text-sm font-medium text-gray-700 mb-2"
       >
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}

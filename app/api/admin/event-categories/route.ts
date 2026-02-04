@@ -1,6 +1,8 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/src/auth";
 import { EventCategory } from "@/src/entities/EventCategory";
+import { Event } from "@/src/entities/Event";
+import { Conference } from "@/src/entities/Conference";
 import { NextRequest, NextResponse } from "next/server";
 
 async function getRepository<T>(entity: new () => T) {
@@ -165,6 +167,20 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
+    // Supprimer d'abord toutes les conférences des événements associés
+    const eventRepository = await getRepository(Event);
+    const conferenceRepository = await getRepository(Conference);
+    
+    const events = await eventRepository.find({
+      where: { eventCategoryId: parseInt(id) },
+    });
+
+    for (const event of events) {
+      await conferenceRepository.delete({ eventId: event.id });
+      await eventRepository.remove(event);
+    }
+
+    // Puis supprimer la catégorie
     await categoryRepository.remove(category);
 
     return NextResponse.json({ message: "Catégorie supprimée" }, { status: 200 });

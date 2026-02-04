@@ -23,11 +23,11 @@ export class Event {
   @Column({ type: "text" })
   description!: string;
 
-  @Column({ type: "date" })
-  startDate!: string;
+  @Column({ type: "timestamptz" })
+  startDate!: Date;
 
-  @Column({ type: "date" })
-  endDate!: string;
+  @Column({ type: "timestamptz" })
+  endDate!: Date;
 
   @Column({ type: "boolean", default: true })
   isVisible!: boolean;
@@ -45,7 +45,7 @@ export class Event {
   @UpdateDateColumn({ type: "timestamptz" })
   updatedAt!: Date;
 
-  @OneToMany(() => Conference, (conference: Conference) => conference.event)
+  @OneToMany(() => Conference, (conference: Conference) => conference.event, { cascade: ["remove"] })
   conferences?: Conference[];
 
   @OneToMany(() => Registration, (registration: Registration) => registration.event)
