@@ -324,13 +324,13 @@ export default function EventsPage() {
                           Événement
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                        {event.title}
+                      <td className="px-6 py-4 text-sm font-medium text-gray-900 max-w-xs truncate">
                         {event.conferences && event.conferences.length > 0 && (
-                          <span className="ml-2 text-xs text-gray-500">
+                          <span className="mr-2 text-xs text-gray-500">
                             ({event.conferences.length} conf.)
                           </span>
                         )}
+                        {event.title}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-500">{event.category.name}</td>
                       <td className="px-6 py-4 text-sm text-gray-500">
@@ -389,7 +389,7 @@ export default function EventsPage() {
                               Conférence
                             </span>
                           </td>
-                          <td className="px-6 py-3 text-sm text-gray-700">{conf.title}</td>
+                          <td className="px-6 py-3 text-sm text-gray-700 max-w-xs truncate">{conf.title}</td>
                           <td className="px-6 py-3 text-sm text-gray-500">{conf.category.name}</td>
                           <td className="px-6 py-3 text-sm text-gray-500">
                             {new Date(conf.startDatetime).toLocaleString("fr-FR", { 

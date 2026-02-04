@@ -48,6 +48,16 @@ export default function Header() {
           </div>
           
           <div className="flex items-center gap-4">
+            <Link
+              href="/events"
+              className={`px-4 py-2 rounded-lg font-medium transition-colors hidden md:block ${
+                pathname === "/events"
+                  ? "bg-indigo-100 text-indigo-700"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`}
+            >
+              Événements
+            </Link>
             {status === "authenticated" ? (
               <>
                 <div className="text-sm hidden md:block">

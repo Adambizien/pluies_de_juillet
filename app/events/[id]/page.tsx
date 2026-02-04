@@ -104,8 +104,8 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                 {formatPrice(event.price)} €
               </span>
             </div>
-            <h1 className="text-3xl font-bold text-gray-900">{event.title}</h1>
-            <p className="text-gray-700 leading-relaxed">{event.description}</p>
+            <h1 className="text-3xl font-bold text-gray-900" style={{wordBreak: 'break-word', overflowWrap: 'break-word'}}>{event.title}</h1>
+            <p className="text-gray-700 leading-relaxed" style={{wordBreak: 'break-word', overflowWrap: 'break-word'}}>{event.description}</p>
           </div>
         </div>
 
@@ -127,8 +127,8 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                       {formatDateTime(conf.endDatetime)}
                     </span>
                   </div>
-                  <h3 className="mt-2 text-xl font-semibold text-gray-900">{conf.title}</h3>
-                  <p className="mt-1 text-gray-700 leading-relaxed">{conf.description}</p>
+                  <h3 className="mt-2 text-xl font-semibold text-gray-900" style={{wordBreak: 'break-word', overflowWrap: 'break-word'}}>{conf.title}</h3>
+                  <p className="mt-1 text-gray-700 leading-relaxed" style={{wordBreak: 'break-word', overflowWrap: 'break-word'}}>{conf.description}</p>
                 </div>
               ))}
             </div>
