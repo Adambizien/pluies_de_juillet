@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import Modal from "@/components/Modal";
 import Select from "@/components/Select";
 import DropdownMenu from "@/components/DropdownMenu";
@@ -273,7 +272,7 @@ export default function EventsPage() {
           onClick={() => openEventModal()}
           className="bg-indigo-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-indigo-700 transition-colors"
         >
-          + Créer un événement
+          Créer un événement
         </button>
       </div>
 

@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/src/auth";
 import { Conference } from "@/src/entities/Conference";
 import { NextRequest, NextResponse } from "next/server";
+import { getUserRole } from "@/lib/getUserRole";
 
 async function getRepository<T>(entity: new () => T) {
   const { AppDataSource } = await import("@/src/data-source");
@@ -19,7 +20,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    const userRole = (session.user as unknown as Record<string, unknown>).role as string;
+    const userId = (session.user as unknown as Record<string, unknown>).id as string;
+    const userRole = await getUserRole(userId);
     if (userRole !== "admin") {
       return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
     }
@@ -62,7 +64,8 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    const userRole = (session.user as unknown as Record<string, unknown>).role as string;
+    const userId = (session.user as unknown as Record<string, unknown>).id as string;
+    const userRole = await getUserRole(userId);
     if (userRole !== "admin") {
       return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
     }
@@ -113,7 +116,8 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    const userRole = (session.user as unknown as Record<string, unknown>).role as string;
+    const userId = (session.user as unknown as Record<string, unknown>).id as string;
+    const userRole = await getUserRole(userId);
     if (userRole !== "admin") {
       return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
     }

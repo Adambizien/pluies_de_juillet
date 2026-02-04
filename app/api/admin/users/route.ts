@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/src/auth";
 import { User } from "@/src/entities/User";
+import { getUserRole } from "@/lib/getUserRole";
 
 async function getUserRepository() {
   const { AppDataSource } = await import("@/src/data-source");
@@ -18,7 +19,8 @@ export async function GET() {
       return Response.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    const userRole = (session.user as unknown as Record<string, unknown>).role as string;
+    const userId = (session.user as unknown as Record<string, unknown>).id as string;
+    const userRole = await getUserRole(userId);
     if (userRole !== "admin") {
       return Response.json({ error: "Accès refusé" }, { status: 403 });
     }
@@ -58,7 +60,8 @@ export async function PATCH(request: Request) {
       return Response.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    const userRole = (session.user as unknown as Record<string, unknown>).role as string;
+    const currentUserId = (session.user as unknown as Record<string, unknown>).id as string;
+    const userRole = await getUserRole(currentUserId);
     if (userRole !== "admin") {
       return Response.json({ error: "Accès refusé" }, { status: 403 });
     }
@@ -99,8 +102,8 @@ export async function DELETE(request: Request) {
       return Response.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    const userRole = (session.user as unknown as Record<string, unknown>).role as string;
-    const currentUserId = (session.user as unknown as Record<string, unknown>).id as number;
+    const currentUserId = (session.user as unknown as Record<string, unknown>).id as string;
+    const userRole = await getUserRole(currentUserId);
     
     if (userRole !== "admin") {
       return Response.json({ error: "Accès refusé" }, { status: 403 });
@@ -115,7 +118,7 @@ export async function DELETE(request: Request) {
 
     const userIdNum = parseInt(userId);
     
-    if (userIdNum === currentUserId) {
+    if (userIdNum === parseInt(currentUserId)) {
       return Response.json({ error: "Vous ne pouvez pas supprimer votre propre compte" }, { status: 400 });
     }
 

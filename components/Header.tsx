@@ -10,13 +10,13 @@ interface UserInfo {
   lastname: string | null;
   phone: string | null;
   dateOfBirth: string | null;
+  role: string | null;
 }
 
 export default function Header() {
   const { data: session, status } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-  const userRole = (session?.user as Record<string, unknown>)?.role as string;
   const pathname = usePathname();
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function Header() {
                   <p className="text-gray-700">
                     Bienvenue, <span className="font-semibold">
                       {userInfo ? `${userInfo.firstname} ${userInfo.lastname || ""}`.trim() : session?.user?.email}
-                      {userRole =='admin' ? ` (${userRole})` : ""}
+                      {userInfo?.role === 'admin' ? ` (${userInfo.role})` : ""}
                     </span>
                   </p>
                 </div>
@@ -112,7 +112,7 @@ export default function Header() {
                             </svg>
                             Mon profil
                           </Link>
-                          {userRole === "admin" && (
+                          {userInfo?.role === "admin" && (
                             <Link
                               href="/admin"
                               className={`flex items-center px-4 py-2 text-sm transition-colors ${

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { validatePassword } from "@/lib/passwordValidator";
 
+
 export default function Register() {
   const router = useRouter();
   const [error, setError] = useState("");

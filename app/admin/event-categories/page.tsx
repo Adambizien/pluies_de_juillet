@@ -168,7 +168,7 @@ export default function EventCategoriesPage() {
           onClick={openCreateModal}
           className="bg-indigo-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-indigo-700 transition-colors"
         >
-          + Ajouter une catégorie
+          Ajouter une catégorie
         </button>
       </div>
 
@@ -188,6 +188,9 @@ export default function EventCategoriesPage() {
                   Créée le
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Modifiée le
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -201,7 +204,10 @@ export default function EventCategoriesPage() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {new Date(category.createdAt).toLocaleDateString("fr-FR")}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {new Date(category.updatedAt).toLocaleDateString("fr-FR")}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <DropdownMenu
                       actions={[
                         {

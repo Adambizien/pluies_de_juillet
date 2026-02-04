@@ -4,6 +4,7 @@ import { User } from "@/src/entities/User";
 import { Registration } from "@/src/entities/Registration";
 import { Event } from "@/src/entities/Event";
 import { Conference } from "@/src/entities/Conference";
+import { getUserRole } from "@/lib/getUserRole";
 
 async function getRepository<T>(entity: new () => T) {
   const { AppDataSource } = await import("@/src/data-source");
@@ -21,7 +22,8 @@ export async function GET() {
       return Response.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    const userRole = (session.user as unknown as Record<string, unknown>).role as string;
+    const userId = (session.user as unknown as Record<string, unknown>).id as string;
+    const userRole = await getUserRole(userId);
     if (userRole !== "admin") {
       return Response.json({ error: "Accès refusé" }, { status: 403 });
     }

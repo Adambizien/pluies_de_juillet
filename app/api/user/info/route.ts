@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/src/auth";
 import { UserInfo } from "@/src/entities/UserInfo";
+import { getUserRole } from "@/lib/getUserRole";
 
 async function getUserInfoRepository() {
   const { AppDataSource } = await import("@/src/data-source");
@@ -18,9 +19,12 @@ export async function GET() {
       return Response.json({ error: "Non authentifié" }, { status: 401 });
     }
 
+    const userId = parseInt((session.user as unknown as Record<string, unknown>).id as string);
+    const userRole = await getUserRole(userId);
+
     const userInfoRepository = await getUserInfoRepository();
     const userInfo = await userInfoRepository.findOne({
-      where: { userId: parseInt((session.user as unknown as Record<string, unknown>).id as string) },
+      where: { userId },
     });
 
     if (!userInfo) {
@@ -32,6 +36,7 @@ export async function GET() {
       lastname: userInfo.lastname,
       phone: userInfo.phone,
       dateOfBirth: userInfo.dateOfBirth,
+      role: userRole,
     });
   } catch (error) {
     console.error("Erreur récupération infos utilisateur:", error);
