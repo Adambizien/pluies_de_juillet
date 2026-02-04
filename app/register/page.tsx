@@ -11,6 +11,22 @@ export default function Register() {
   const [success, setSuccess] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
+  const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+
+  const validatePhoneNumber = (phoneNumber: string): boolean => {
+    const phoneRegex = /^(?:\+33[1-9]|0[1-9])[0-9]{8}$/;
+    return phoneRegex.test(phoneNumber.replace(/\s+/g, ""));
+  };
+
+  const handlePhoneChange = (value: string) => {
+    setPhone(value);
+    if (value.trim() && !validatePhoneNumber(value)) {
+      setPhoneError("Format invalide. Utilisez un format français (06/07 XX XX XX XX)");
+    } else {
+      setPhoneError("");
+    }
+  };
 
   const handlePasswordChange = (value: string) => {
     setPassword(value);
@@ -30,18 +46,24 @@ export default function Register() {
       return;
     }
 
+    if (phone.trim() && !validatePhoneNumber(phone)) {
+      setError("Le numéro de téléphone n'est pas valide");
+      setLoading(false);
+      return;
+    }
+
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
+    const emailVal = formData.get("email") as string;
     const firstname = formData.get("firstname") as string;
     const lastname = formData.get("lastname") as string;
-    const phone = formData.get("phone") as string;
+    const phoneVal = formData.get("phone") as string;
     const dateOfBirth = formData.get("dateOfBirth") as string;
 
     try {
       const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, firstname, lastname, phone, dateOfBirth }),
+        body: JSON.stringify({ email: emailVal, password, firstname, lastname, phone: phoneVal, dateOfBirth }),
       });
 
       const data = await response.json();
@@ -180,9 +202,16 @@ export default function Register() {
                   id="phone"
                   name="phone"
                   type="tel"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400"
-                  placeholder="+33 6 12 34 56 78"
+                  value={phone}
+                  onChange={(e) => handlePhoneChange(e.target.value)}
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400 ${
+                    phoneError ? "border-red-300" : "border-gray-300"
+                  }`}
+                  placeholder="06 12 34 56 78"
                 />
+                {phoneError && (
+                  <p className="text-xs text-red-600 mt-1">{phoneError}</p>
+                )}
               </div>
               <div>
                 <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700 mb-1.5">

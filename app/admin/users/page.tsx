@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Modal from "@/components/Modal";
+import Select from "@/components/Select";
 
 interface User {
   id: number;
@@ -9,11 +11,17 @@ interface User {
   createdAt: string;
   firstname?: string;
   lastname?: string;
+  phone?: string;
+  dateOfBirth?: string;
 }
 
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [actionLoading, setActionLoading] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<string>("");
 
   useEffect(() => {
     fetchUsers();
@@ -31,6 +39,71 @@ export default function UsersPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleRoleChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedUser || !selectedRole) return;
+
+    setActionLoading(true);
+    try {
+      const response = await fetch("/api/admin/users", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: selectedUser.id,
+          role: selectedRole,
+        }),
+      });
+
+      if (response.ok) {
+        await fetchUsers();
+        setShowModal(false);
+        setSelectedUser(null);
+        setSelectedRole("");
+      } else {
+        const error = await response.json();
+        alert(error.error || "Erreur lors de la modification");
+      }
+    } catch (error) {
+      console.error("Erreur modification rôle:", error);
+      alert("Erreur lors de la modification");
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleDelete = async (user: User) => {
+    if (!confirm(`Êtes-vous sûr de vouloir supprimer l'utilisateur ${user.email} ?`)) {
+      return;
+    }
+
+    setActionLoading(true);
+    try {
+      const response = await fetch(`/api/admin/users?userId=${user.id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        await fetchUsers();
+      } else {
+        const error = await response.json();
+        alert(error.error || "Erreur lors de la suppression");
+      }
+    } catch (error) {
+      console.error("Erreur suppression utilisateur:", error);
+      alert("Erreur lors de la suppression");
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const openModal = (user: User) => {
+    setSelectedUser(user);
+    setSelectedRole(user.role);
+    setShowModal(true);
   };
 
   if (loading) {
@@ -68,6 +141,12 @@ export default function UsersPage() {
                 Rôle
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Téléphone
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Date de naissance
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Date d&apos;inscription
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -101,13 +180,29 @@ export default function UsersPage() {
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {user.phone || "Non renseigné"}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {user.dateOfBirth
+                    ? new Date(user.dateOfBirth).toLocaleDateString("fr-FR")
+                    : "Non renseigné"}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {new Date(user.createdAt).toLocaleDateString("fr-FR")}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button className="text-indigo-600 hover:text-indigo-900 mr-4">
+                  <button
+                    onClick={() => openModal(user)}
+                    disabled={actionLoading}
+                    className="text-indigo-600 hover:text-indigo-900 mr-4 disabled:opacity-50"
+                  >
                     Modifier
                   </button>
-                  <button className="text-red-600 hover:text-red-900">
+                  <button
+                    onClick={() => handleDelete(user)}
+                    disabled={actionLoading}
+                    className="text-red-600 hover:text-red-900 disabled:opacity-50"
+                  >
                     Supprimer
                   </button>
                 </td>
@@ -116,6 +211,58 @@ export default function UsersPage() {
           </tbody>
         </table>
       </div>
+
+      <Modal
+        isOpen={showModal && selectedUser !== null}
+        onClose={() => {
+          setShowModal(false);
+          setSelectedRole("");
+        }}
+        title="Modifier le rôle"
+      >
+        {selectedUser && (
+          <form onSubmit={handleRoleChange}>
+            <p className="text-gray-600 mb-6">
+              Utilisateur: <strong>{selectedUser.email}</strong>
+            </p>
+            
+            <Select
+              id="role"
+              label="Sélectionner le rôle"
+              value={selectedRole}
+              onChange={setSelectedRole}
+              disabled={actionLoading}
+              options={[
+                { value: "user", label: "Utilisateur" },
+                { value: "admin", label: "Administrateur" },
+              ]}
+            />
+            
+            <div className="flex gap-3">
+              <button
+                type="submit"
+                disabled={actionLoading || selectedRole === selectedUser.role}
+                className="flex-1 py-3 px-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {actionLoading ? "Modification..." : "Valider"}
+              </button>
+              
+              <button
+                type="button"
+                onClick={() => {
+                  setShowModal(false);
+                  setSelectedUser(null);
+                  setSelectedRole("");
+                }}
+                disabled={actionLoading}
+                className="flex-1 py-3 px-4 bg-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-400 disabled:opacity-50"
+              >
+                Annuler
+              </button>
+            </div>
+          </form>
+        )}
+      </Modal>
     </div>
   );
 }

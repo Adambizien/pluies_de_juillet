@@ -149,18 +149,22 @@ export default function Header() {
               </>
             ) : (
               <>
-                <Link
-                  href="/login"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors"
-                >
-                  Se connecter
-                </Link>
-                <Link
-                  href="/register"
-                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors"
-                >
-                  S&apos;inscrire
-                </Link>
+                {pathname !== "/login" && (
+                  <Link
+                    href="/login"
+                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors"
+                  >
+                    Se connecter
+                  </Link>
+                )}
+                {pathname !== "/register" && (
+                  <Link
+                    href="/register"
+                    className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors"
+                  >
+                    S&apos;inscrire
+                  </Link>
+                )}
               </>
             )}
           </div>

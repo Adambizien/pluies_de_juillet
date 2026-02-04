@@ -10,13 +10,24 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { email, password, firstname, lastname, phone, dateOfBirth } = body;
 
-    // Valider les inputs
     if (!email || !password || !firstname) {
       return NextResponse.json(
         { error: "Email, password et firstname sont requis" },
         { status: 400 }
       );
     }
+
+    if (phone && phone.trim()) {
+      const phoneRegex = /^(?:\+33[1-9]|0[1-9])[0-9]{8}$/;
+      const cleanPhone = phone.replace(/\s+/g, "");
+      if (!phoneRegex.test(cleanPhone)) {
+        return NextResponse.json(
+          { error: "Le numéro de téléphone n'est pas valide. Format attendu: 06 12 34 56 78" },
+          { status: 400 }
+        );
+      }
+    }
+
     const passwordValidation = validatePassword(password);
     if (!passwordValidation.isValid) {
       return NextResponse.json(
@@ -32,7 +43,6 @@ export async function POST(req: NextRequest) {
     const userRepository = AppDataSource.getRepository(User);
     const userInfoRepository = AppDataSource.getRepository(UserInfo);
 
-    // Vérifier si l'utilisateur existe
     const existingUser = await userRepository.findOne({
       where: { email },
     });
@@ -44,10 +54,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Hasher le mot de passe
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Créer l'utilisateur
     const newUser = userRepository.create({
       email,
       password: hashedPassword,
@@ -56,7 +64,6 @@ export async function POST(req: NextRequest) {
 
     const savedUser = await userRepository.save(newUser);
 
-    // Créer les infos utilisateur
     const newUserInfo = userInfoRepository.create({
       userId: savedUser.id,
       firstname,
