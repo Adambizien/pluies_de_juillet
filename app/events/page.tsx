@@ -67,14 +67,12 @@ export default function EventsPage() {
   useEffect(() => {
     let filtered = [...events];
 
-    // Filtre par catégorie d'événement
     if (selectedEventCategory) {
       filtered = filtered.filter(
         (event) => event.category.id === parseInt(selectedEventCategory)
       );
     }
 
-    // Filtre par catégorie de conférence
     if (selectedConferenceCategory) {
       filtered = filtered.filter((event) =>
         event.conferences?.some(
@@ -83,21 +81,18 @@ export default function EventsPage() {
       );
     }
 
-    // Filtre par date de début
     if (startDateFilter) {
       filtered = filtered.filter(
         (event) => new Date(event.startDate) >= new Date(startDateFilter)
       );
     }
 
-    // Filtre par date de fin
     if (endDateFilter) {
       filtered = filtered.filter(
         (event) => new Date(event.endDate) <= new Date(endDateFilter)
       );
     }
 
-    // Tri par date de début
     filtered.sort((a, b) => 
       new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
     );
