@@ -11,7 +11,7 @@ export async function proxy(req: NextRequest) {
     return NextResponse.redirect(newUrl);
   }
 
-  if (!token && (req.nextUrl.pathname.startsWith("/dashboard") || req.nextUrl.pathname.startsWith("/admin"))) {
+  if (!token && (req.nextUrl.pathname.startsWith("/dashboard") || req.nextUrl.pathname.startsWith("/admin") || req.nextUrl.pathname === "/profile" || req.nextUrl.pathname.startsWith("/planning"))) {
     const newUrl = new URL("/login", req.nextUrl.origin);
     return NextResponse.redirect(newUrl);
   }
@@ -30,5 +30,5 @@ export async function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/admin/:path*", "/login", "/register"],
+  matcher: ["/dashboard/:path*", "/admin/:path*", "/login", "/register", "/profile", "/planning/:path*"],
 };

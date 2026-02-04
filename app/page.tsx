@@ -23,21 +23,15 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/admin/events")
+    fetch("/api/events")
       .then((res) => res.json())
       .then((data) => {
-        const now = new Date();
-        
-        const visibleEvents = data
-          .filter((event: Event & { isVisible: boolean }) => {
-            const eventEndDate = new Date(event.endDate);
-            return event.isVisible && eventEndDate >= now;
-          })
+        const upcomingEvents = data
           .sort((a: Event, b: Event) => {
             return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
           })
           .slice(0, 3);
-        setEvents(visibleEvents);
+        setEvents(upcomingEvents);
         setLoading(false);
       })
       .catch(() => setLoading(false));

@@ -43,26 +43,19 @@ export default function EventsPage() {
 
   useEffect(() => {
     Promise.all([
-      fetch("/api/admin/events").then((res) => res.json()),
-      fetch("/api/admin/event-categories").then((res) => res.json()),
-      fetch("/api/admin/conference-categories").then((res) => res.json()),
+      fetch("/api/events").then((res) => res.json()),
+      fetch("/api/event-categories").then((res) => res.json()),
+      fetch("/api/conference-categories").then((res) => res.json()),
     ])
       .then(([eventsData, eventCategoriesData, conferenceCategoriesData]) => {
-        const now = new Date();
-        const upcomingEvents = eventsData.filter((event: Event) => {
-          const eventEndDate = new Date(event.endDate);
-          return event.isVisible && eventEndDate >= now;
-        });
-        
-        setEvents(upcomingEvents);
-        setEventCategories(eventCategoriesData);
-        setConferenceCategories(conferenceCategoriesData);
+        setEvents(Array.isArray(eventsData) ? eventsData : []);
+        setEventCategories(Array.isArray(eventCategoriesData) ? eventCategoriesData : []);
+        setConferenceCategories(Array.isArray(conferenceCategoriesData) ? conferenceCategoriesData : []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
   }, []);
 
-  // Calculer les événements filtrés directement
   const filteredEvents = (() => {
     let filtered = [...events];
 
