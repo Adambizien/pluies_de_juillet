@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { useSession, signOut } from "next-auth/react";
 import Modal from "@/components/Modal";
 import Select from "@/components/Select";
 
@@ -16,16 +17,13 @@ interface User {
 }
 
 export default function UsersPage() {
+  const { data: session } = useSession();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
   const [selectedRole, setSelectedRole] = useState<string>("");
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
 
   const fetchUsers = async () => {
     try {
@@ -40,6 +38,14 @@ export default function UsersPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const handleLogout = useCallback(async () => {
+    await signOut({ redirect: true, callbackUrl: "/login" });
+  }, []);
 
   const handleRoleChange = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,10 +65,16 @@ export default function UsersPage() {
       });
 
       if (response.ok) {
-        await fetchUsers();
-        setShowModal(false);
-        setSelectedUser(null);
-        setSelectedRole("");
+        const currentUserId = (session?.user as unknown as Record<string, unknown>)?.id;
+        if (selectedUser.id === parseInt(currentUserId as string)) {
+          alert("Votre rôle a été modifié. Vous allez être déconnecté.");
+          await handleLogout();
+        } else {
+          await fetchUsers();
+          setShowModal(false);
+          setSelectedUser(null);
+          setSelectedRole("");
+        }
       } else {
         const error = await response.json();
         alert(error.error || "Erreur lors de la modification");
@@ -87,7 +99,13 @@ export default function UsersPage() {
       });
 
       if (response.ok) {
-        await fetchUsers();
+        const currentUserId = (session?.user as unknown as Record<string, unknown>)?.id;
+        if (user.id === parseInt(currentUserId as string)) {
+          alert("Votre compte a été supprimé. Vous allez être déconnecté.");
+          await handleLogout();
+        } else {
+          await fetchUsers();
+        }
       } else {
         const error = await response.json();
         alert(error.error || "Erreur lors de la suppression");
