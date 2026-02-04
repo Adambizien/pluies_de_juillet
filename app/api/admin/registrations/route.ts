@@ -46,7 +46,7 @@ export async function POST(req: Request) {
     const userRepository = AppDataSource.getRepository(User);
     const eventRepository = AppDataSource.getRepository(Event);
 
-    // Vérifier que l'utilisateur existe
+
     const user = await userRepository.findOne({ where: { id: userId } });
     if (!user) {
       return Response.json(
@@ -55,7 +55,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Vérifier que l'événement existe
     const event = await eventRepository.findOne({ where: { id: eventId } });
     if (!event) {
       return Response.json(
@@ -64,7 +63,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Vérifier si l'inscription existe déjà
     const existingRegistration = await registrationRepository.findOne({
       where: { userId, eventId },
     });
@@ -75,7 +73,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // Créer la nouvelle inscription
+
     const registration = new Registration();
     registration.userId = userId;
     registration.eventId = eventId;

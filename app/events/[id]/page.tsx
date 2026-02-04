@@ -93,8 +93,12 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               <span className="px-3 py-1 rounded-full text-sm font-semibold bg-indigo-100 text-indigo-700">
                 {event.category.name}
               </span>
-              <span className="text-sm text-gray-500">
-                {formatDateTime(event.startDate)} → {formatDateTime(event.endDate)}
+              <span className="text-sm text-gray-500 flex items-center gap-1">
+                {formatDateTime(event.startDate)}
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+                {formatDateTime(event.endDate)}
               </span>
               <span className="ml-auto text-lg font-bold text-gray-900">
                 {formatPrice(event.price)} €
@@ -115,8 +119,12 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                     <span className="px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
                       {conf.category.name}
                     </span>
-                    <span className="text-sm text-gray-500">
-                      {formatDateTime(conf.startDatetime)} → {formatDateTime(conf.endDatetime)}
+                    <span className="text-sm text-gray-500 flex items-center gap-1">
+                      {formatDateTime(conf.startDatetime)}
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                      {formatDateTime(conf.endDatetime)}
                     </span>
                   </div>
                   <h3 className="mt-2 text-xl font-semibold text-gray-900">{conf.title}</h3>

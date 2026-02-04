@@ -17,7 +17,7 @@ export class UserInfo {
   @Column({ type: "int", nullable: true })
   userId!: number;
 
-  @OneToOne(() => User, (user) => user.userInfo, { onDelete: "CASCADE" })
+  @OneToOne(() => User, (user: User) => user.userInfo, { onDelete: "CASCADE" })
   @JoinColumn({ name: "userId" })
   user!: User;
 
