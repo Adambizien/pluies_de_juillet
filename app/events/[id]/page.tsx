@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Event } from "@/src/entities/Event";
 import { Registration } from "@/src/entities/Registration";
+import { User } from "@/src/entities/User";
 import { StripeCheckout } from "@/components/StripeCheckout";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/auth";
@@ -103,7 +104,25 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
   if (!event) notFound();
 
   const session = await getServerSession(authOptions);
+  
+  let isAdmin = false;
+  if (session?.user?.email) {
+    const userRepository = await getRepository(User);
+    const user = await userRepository.findOne({
+      where: { email: session.user.email },
+    });
+    isAdmin = user?.role === "admin";
+  }
+
+  if (!event.isVisible && !isAdmin) {
+    notFound();
+  }
+
   const isAlreadyRegistered = await checkUserRegistration(event.id, session?.user?.email);
+  
+  const visibleConferences = event.conferences?.filter(
+    (conf) => conf.isVisible || isAdmin
+  ) || [];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -139,9 +158,9 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
         <div className="mt-8">
           <h2 className="text-2xl font-semibold text-gray-900">Conférences</h2>
-          {event.conferences && event.conferences.length > 0 ? (
+          {visibleConferences && visibleConferences.length > 0 ? (
             <div className="mt-4 grid gap-4">
-              {event.conferences.map((conf) => (
+              {visibleConferences.map((conf) => (
                 <div key={conf.id} className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
                   <div className="flex flex-wrap items-center gap-3">
                     <span className="px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">

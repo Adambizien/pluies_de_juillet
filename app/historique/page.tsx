@@ -115,7 +115,7 @@ export default function HistoriquePage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <h2 className="text-xl font-semibold text-gray-900 mb-2">Aucune inscription</h2>
-            <p className="text-gray-600 mb-6">Vous n'avez encore aucune inscription enregistrée.</p>
+            <p className="text-gray-600 mb-6">Vous n&apos;avez encore aucune inscription enregistrée.</p>
             <Link
               href="/events"
               className="inline-block px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors"
@@ -180,7 +180,7 @@ export default function HistoriquePage() {
                         href={`/events/${event.id}`}
                         className="px-4 py-2 text-sm font-medium rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
                       >
-                        Voir l'événement
+                        Voir l&apos;événement
                       </Link>
                       <button
                         onClick={() => handleUnregister(registration.id)}

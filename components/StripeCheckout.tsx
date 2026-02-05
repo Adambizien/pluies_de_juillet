@@ -10,7 +10,7 @@ interface StripeCheckoutProps {
   isAlreadyRegistered: boolean;
 }
 
-export function StripeCheckout({ eventId, eventPrice, eventTitle, isAlreadyRegistered }: StripeCheckoutProps) {
+export function StripeCheckout({ eventId, eventPrice, isAlreadyRegistered }: StripeCheckoutProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
