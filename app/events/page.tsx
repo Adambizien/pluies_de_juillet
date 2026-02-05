@@ -26,6 +26,7 @@ interface Event {
     id: number;
     title: string;
     category: ConferenceCategory;
+    isVisible: boolean;
   }>;
 }
 
@@ -266,17 +267,17 @@ export default function EventsPage() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
                       </svg>
                       <span>
-                        {event.conferences?.length || 0} conférence{(event.conferences?.length || 0) !== 1 ? 's' : ''}
+                        {event.conferences?.filter(c => c.isVisible).length || 0} conférence{(event.conferences?.filter(c => c.isVisible).length || 0) !== 1 ? 's' : ''}
                       </span>
                     </div>
                   </div>
 
                   {/* Affichage des conférences */}
-                  {event.conferences && event.conferences.length > 0 && (
+                  {event.conferences && event.conferences.filter(c => c.isVisible).length > 0 && (
                     <div className="mb-4 pt-4 border-t border-gray-200">
                       <p className="text-xs font-semibold text-gray-700 mb-2 uppercase">Conférences</p>
                       <div className="space-y-2">
-                        {event.conferences.slice(0, 2).map((conf) => (
+                        {event.conferences.filter(c => c.isVisible).slice(0, 2).map((conf) => (
                           <div
                             key={conf.id}
                             className="p-2 bg-purple-50 border border-purple-200 rounded"
@@ -286,7 +287,7 @@ export default function EventsPage() {
                           </div>
                         ))}
                       </div>
-                      {event.conferences.length > 2 && (
+                      {event.conferences.filter(c => c.isVisible).length > 2 && (
                         <p className="text-xs text-gray-500 italic mt-2">
                           et bien plus encore...
                         </p>
