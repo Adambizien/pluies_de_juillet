@@ -123,6 +123,20 @@ export default function Header() {
                             Planification
                           </Link>
                           <Link
+                            href="/historique"
+                            className={`flex items-center px-4 py-2 text-sm transition-colors ${
+                              pathname === "/historique"
+                                ? "bg-indigo-50 text-indigo-700 font-medium"
+                                : "text-gray-700 hover:bg-indigo-50"
+                            }`}
+                            onClick={() => setMenuOpen(false)}
+                          >
+                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Historique
+                          </Link>
+                          <Link
                             href="/profile"
                             className={`flex items-center px-4 py-2 text-sm transition-colors ${
                               pathname === "/profile"

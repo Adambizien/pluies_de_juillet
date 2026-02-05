@@ -2,17 +2,17 @@
 
 Un projet Next.js avec TypeORM et PostgreSQL pour gérer les utilisateurs.
 
-## 📋 Prérequis
+## Prérequis
 
-- Node.js 18+ et npm
-- PostgreSQL 12+
+- Node.js et npm
+- PostgreSQL
 
-## 🚀 Installation et Démarrage
+## Installation et Démarrage
 
 ### 1. Cloner le projet
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/Adambizien/pluies_de_juillet.git
 cd pluies_de_juillet
 ```
 
@@ -73,12 +73,12 @@ Le site sera accessible à `http://localhost:3000`
 
 Au démarrage, tu devrais voir :
 ```
-✅ Database connected successfully
+Database connected successfully
 ```
 
 Les tables `users` et `user_info` seront créées automatiquement.
 
-## 👨‍💼 Créer un compte administrateur
+## Créer un compte administrateur
 
 Pour créer un compte administrateur directement via la CLI :
 

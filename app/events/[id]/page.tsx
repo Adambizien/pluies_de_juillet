@@ -1,5 +1,9 @@
 import { notFound } from "next/navigation";
 import { Event } from "@/src/entities/Event";
+import { Registration } from "@/src/entities/Registration";
+import { StripeCheckout } from "@/components/StripeCheckout";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/src/auth";
 
 interface EventCategory {
   id: number;
@@ -62,6 +66,20 @@ async function fetchEvent(id: string): Promise<EventDetail | null> {
   return event as EventDetail;
 }
 
+async function checkUserRegistration(eventId: number, userEmail: string | null | undefined): Promise<boolean> {
+  if (!userEmail) return false;
+  
+  const registrationRepository = await getRepository(Registration);
+  const registration = await registrationRepository
+    .createQueryBuilder("registration")
+    .innerJoin("registration.user", "user")
+    .where("user.email = :email", { email: userEmail })
+    .andWhere("registration.eventId = :eventId", { eventId })
+    .getOne();
+  
+  return !!registration;
+}
+
 function formatDateTime(value: string) {
   return new Date(value).toLocaleString("fr-FR", {
     day: "2-digit",
@@ -83,6 +101,9 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
   const resolvedParams = await params;
   const event = await fetchEvent(resolvedParams.id);
   if (!event) notFound();
+
+  const session = await getServerSession(authOptions);
+  const isAlreadyRegistered = await checkUserRegistration(event.id, session?.user?.email);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -107,6 +128,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             <h1 className="text-3xl font-bold text-gray-900" style={{wordBreak: 'break-word', overflowWrap: 'break-word'}}>{event.title}</h1>
             <p className="text-gray-700 leading-relaxed" style={{wordBreak: 'break-word', overflowWrap: 'break-word'}}>{event.description}</p>
           </div>
+
+          <StripeCheckout 
+            eventId={event.id} 
+            eventPrice={event.price} 
+            eventTitle={event.title}
+            isAlreadyRegistered={isAlreadyRegistered}
+          />
         </div>
 
         <div className="mt-8">
