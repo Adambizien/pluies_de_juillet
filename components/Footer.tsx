@@ -33,10 +33,22 @@ export default function Footer() {
           {/* Section Informations */}
           <div className="mb-6 sm:mb-0">
             <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Informations</h3>
-            <ul className="space-y-2 text-xs sm:text-sm text-gray-600">
-              <li>Conditions d&apos;utilisation</li>
-              <li>Politique de confidentialité</li>
-              <li>Mentions légales</li>
+            <ul className="space-y-2">
+              <li>
+                <Link href="/conditions" className="text-xs sm:text-sm text-gray-600 hover:text-indigo-600 transition-colors">
+                  Conditions d&apos;utilisation
+                </Link>
+              </li>
+              <li>
+                <Link href="/confidentialite" className="text-xs sm:text-sm text-gray-600 hover:text-indigo-600 transition-colors">
+                  Politique de confidentialité
+                </Link>
+              </li>
+              <li>
+                <Link href="/mentions-legales" className="text-xs sm:text-sm text-gray-600 hover:text-indigo-600 transition-colors">
+                  Mentions légales
+                </Link>
+              </li>
             </ul>
           </div>
 

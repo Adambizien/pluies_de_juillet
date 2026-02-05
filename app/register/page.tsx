@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { validatePassword } from "@/lib/passwordValidator";
+import Link from "next/link";
 
 
 export default function Register() {
@@ -248,9 +249,9 @@ export default function Register() {
             <div className="text-center pt-4">
               <p className="text-xs sm:text-sm text-gray-600">
                 Déjà un compte ?{" "}
-                <a href="/login" className="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">
+                <Link href="/login" className="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">
                   Se connecter
-                </a>
+                </Link>
               </p>
             </div>
           </form>

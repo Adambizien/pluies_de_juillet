@@ -74,7 +74,6 @@ export async function POST(request: Request) {
 
     const registrationRepository = await getRepository(Registration);
 
-    // Vérifier si l'inscription existe déjà
     const existingRegistration = await registrationRepository.findOne({
       where: {
         userId: userId,
@@ -86,7 +85,6 @@ export async function POST(request: Request) {
       return Response.json({ success: true, alreadyExists: true });
     }
 
-    // Créer l'inscription
     await registrationRepository.save({
       userId: userId,
       eventId: parseInt(eventId),

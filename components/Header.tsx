@@ -41,16 +41,16 @@ export default function Header() {
     <header className="bg-white shadow sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-3 sm:py-4">
         <div className="flex justify-between items-center gap-2 sm:gap-4">
-          <div className="flex-1 min-w-0">
-            <Link href="/" className="text-lg sm:text-2xl font-bold text-indigo-600 hover:text-indigo-700 transition-colors truncate">
+          <div className="flex-shrink-0">
+            <Link href="/" className="text-base sm:text-lg md:text-2xl font-bold text-indigo-600 hover:text-indigo-700 transition-colors">
               Pluies de Juillet
             </Link>
           </div>
           
-          <div className="flex items-center gap-2 sm:gap-4">
+          <div className="flex items-center gap-1 sm:gap-2 md:gap-4">
             <Link
               href="/events"
-              className={`px-2 sm:px-4 py-2 rounded-lg text-sm sm:text-base font-medium transition-colors hidden md:block ${
+              className={`px-1.5 sm:px-2 md:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm md:text-base font-medium transition-colors whitespace-nowrap ${
                 pathname === "/events"
                   ? "bg-indigo-100 text-indigo-700"
                   : "text-gray-700 hover:bg-gray-100"

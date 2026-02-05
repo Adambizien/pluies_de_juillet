@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 interface StripeCheckoutProps {
   eventId: number;
@@ -99,18 +100,18 @@ export function StripeCheckout({ eventId, eventPrice, isAlreadyRegistered }: Str
         </p>
         <p className="text-blue-700 text-xs sm:text-sm mt-1">Vous pouvez consulter vos inscriptions dans votre profil.</p>
         <div className="mt-3 flex flex-col sm:flex-row gap-2 sm:gap-4">
-          <a
+          <Link
             href="/planning"
             className="inline-flex items-center justify-center px-3 py-2 text-xs sm:text-sm font-medium rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors w-full sm:w-auto"
           >
             Voir ma planification
-          </a>
-          <a
+          </Link>
+          <Link
             href="/historique"
             className="inline-flex items-center justify-center px-3 py-2 text-xs sm:text-sm font-medium rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors w-full sm:w-auto"
           >
             Voir mon historique
-          </a>
+          </Link>
         </div>
 
       </div>

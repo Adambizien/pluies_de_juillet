@@ -3,6 +3,7 @@
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import Link from "next/link";
 
 
 export default function Login() {
@@ -107,9 +108,9 @@ export default function Login() {
             <div className="text-center pt-4">
               <p className="text-xs sm:text-sm text-gray-600">
                 Pas encore de compte ?{" "}
-                <a href="/register" className="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">
+                <Link href="/register" className="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">
                   S&apos;inscrire
-                </a>
+                </Link>
               </p>
             </div>
           </form>
