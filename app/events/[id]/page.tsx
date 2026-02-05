@@ -126,26 +126,26 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-5xl mx-auto px-6 py-10">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-8">
           <div className="flex flex-col gap-3">
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="px-3 py-1 rounded-full text-sm font-semibold bg-indigo-100 text-indigo-700">
+            <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-3">
+              <span className="px-3 py-1 rounded-full text-xs sm:text-sm font-semibold bg-indigo-100 text-indigo-700 w-fit">
                 {event.category.name}
               </span>
-              <span className="text-sm text-gray-500 flex items-center gap-1">
+              <span className="text-xs sm:text-sm text-gray-500 flex items-center gap-1">
                 {formatDateTime(event.startDate)}
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
                 {formatDateTime(event.endDate)}
               </span>
-              <span className="ml-auto text-lg font-bold text-gray-900">
+              <span className="text-base sm:text-lg font-bold text-gray-900 sm:ml-auto">
                 {formatPrice(event.price)} €
               </span>
             </div>
-            <h1 className="text-3xl font-bold text-gray-900" style={{wordBreak: 'break-word', overflowWrap: 'break-word'}}>{event.title}</h1>
-            <p className="text-gray-700 leading-relaxed" style={{wordBreak: 'break-word', overflowWrap: 'break-word'}}>{event.description}</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900" style={{wordBreak: 'break-word', overflowWrap: 'break-word'}}>{event.title}</h1>
+            <p className="text-sm sm:text-base text-gray-700 leading-relaxed" style={{wordBreak: 'break-word', overflowWrap: 'break-word'}}>{event.description}</p>
           </div>
 
           <StripeCheckout 
@@ -156,17 +156,17 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           />
         </div>
 
-        <div className="mt-8">
-          <h2 className="text-2xl font-semibold text-gray-900">Conférences</h2>
+        <div className="mt-6 sm:mt-8">
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900">Conférences</h2>
           {visibleConferences && visibleConferences.length > 0 ? (
-            <div className="mt-4 grid gap-4">
+            <div className="mt-4 grid gap-3 sm:gap-4">
               {visibleConferences.map((conf) => (
-                <div key={conf.id} className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
+                <div key={conf.id} className="bg-white rounded-xl border border-gray-100 p-4 sm:p-6 shadow-sm">
+                  <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-3">
+                    <span className="px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700 w-fit">
                       {conf.category.name}
                     </span>
-                    <span className="text-sm text-gray-500 flex items-center gap-1">
+                    <span className="text-xs sm:text-sm text-gray-500 flex items-center gap-1">
                       {formatDateTime(conf.startDatetime)}
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -174,13 +174,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                       {formatDateTime(conf.endDatetime)}
                     </span>
                   </div>
-                  <h3 className="mt-2 text-xl font-semibold text-gray-900" style={{wordBreak: 'break-word', overflowWrap: 'break-word'}}>{conf.title}</h3>
-                  <p className="mt-1 text-gray-700 leading-relaxed" style={{wordBreak: 'break-word', overflowWrap: 'break-word'}}>{conf.description}</p>
+                  <h3 className="mt-2 text-lg sm:text-xl font-semibold text-gray-900" style={{wordBreak: 'break-word', overflowWrap: 'break-word'}}>{conf.title}</h3>
+                  <p className="mt-1 text-xs sm:text-base text-gray-700 leading-relaxed" style={{wordBreak: 'break-word', overflowWrap: 'break-word'}}>{conf.description}</p>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="mt-3 text-gray-500">Aucune conférence annoncée pour cet événement.</p>
+            <p className="mt-3 text-sm sm:text-base text-gray-500">Aucune conférence annoncée pour cet événement.</p>
           )}
         </div>
       </div>

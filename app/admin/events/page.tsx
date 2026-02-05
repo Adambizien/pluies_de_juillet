@@ -266,15 +266,15 @@ export default function EventsPage() {
   }
 
   return (
-    <div className="p-8">
-      <div className="mb-6 flex justify-between items-center">
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Liste des événements</h1>
-          <p className="text-gray-600 mt-2">Gérez les événements et leurs conférences</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Liste des événements</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1 sm:mt-2">Gérez les événements et leurs conférences</p>
         </div>
         <button
           onClick={() => openEventModal()}
-          className="bg-indigo-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-indigo-700 transition-colors"
+          className="w-full sm:w-auto bg-indigo-600 text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg text-sm sm:text-base font-semibold hover:bg-indigo-700 transition-colors"
         >
           Créer un événement
         </button>
@@ -282,24 +282,24 @@ export default function EventsPage() {
 
       <div className="bg-white rounded-xl shadow-md overflow-hidden">
         {events.length === 0 ? (
-          <div className="p-8 text-center">
-            <p className="text-gray-500">Aucun événement pour le moment</p>
+          <div className="p-6 sm:p-8 text-center">
+            <p className="text-sm sm:text-base text-gray-500">Aucun événement pour le moment</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Titre</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Catégorie</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date de début</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date de fin</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Prix</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Visible</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Créé le</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Modifié le</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">Titre</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">Catégorie</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">Date de début</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">Date de fin</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">Prix</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">Visible</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">Créé le</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">Modifié le</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -309,7 +309,7 @@ export default function EventsPage() {
                       className="hover:bg-gray-50 cursor-pointer"
                       onClick={() => toggleExpand(event.id)}
                     >
-                      <td className="px-6 py-4 whitespace-nowrap flex items-center gap-2">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap flex items-center gap-2">
                         {event.conferences && event.conferences.length > 0 && (
                           <svg
                             className={`w-4 h-4 transition-transform duration-200 ${expandedEventIds.includes(event.id) ? "rotate-90" : ""}`}
@@ -324,7 +324,7 @@ export default function EventsPage() {
                           Événement
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-sm font-medium text-gray-900 max-w-xs truncate">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium text-gray-900 max-w-xs truncate">
                         {event.conferences && event.conferences.length > 0 && (
                           <span className="mr-2 text-xs text-gray-500">
                             ({event.conferences.length} conf.)
@@ -332,32 +332,32 @@ export default function EventsPage() {
                         )}
                         {event.title}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">{event.category.name}</td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-500">{event.category.name}</td>
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-500">
                         {new Date(event.startDate).toLocaleString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-500">
                         {new Date(event.endDate).toLocaleString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-900 font-medium">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-900 font-medium">
                         {(event.price / 100).toFixed(2)} €
                       </td>
-                      <td className="px-6 py-4 text-sm">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
                         <span className={`px-2 py-1 rounded-full text-xs ${event.isVisible ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}>
                           {event.isVisible ? "Oui" : "Non"}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-500">
                         {event.createdAt
                           ? new Date(event.createdAt).toLocaleDateString("fr-FR")
                           : "Non renseigné"}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-500">
                         {event.updatedAt
                           ? new Date(event.updatedAt).toLocaleDateString("fr-FR")
                           : "Non renseigné"}
                       </td>
-                      <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
+                      <td className="px-3 sm:px-6 py-3 sm:py-4" onClick={(e) => e.stopPropagation()}>
                         <DropdownMenu
                           actions={[
                             {
@@ -384,14 +384,14 @@ export default function EventsPage() {
                     {expandedEventIds.includes(event.id) && event.conferences && event.conferences.length > 0 && (
                       event.conferences.map((conf) => (
                         <tr key={`conf-${conf.id}`} className="bg-gray-50">
-                          <td className="px-6 py-3 pl-12">
+                          <td className="px-3 sm:px-6 py-2 sm:py-3 pl-8 sm:pl-12">
                             <span className="px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
                               Conférence
                             </span>
                           </td>
-                          <td className="px-6 py-3 text-sm text-gray-700 max-w-xs truncate">{conf.title}</td>
-                          <td className="px-6 py-3 text-sm text-gray-500">{conf.category.name}</td>
-                          <td className="px-6 py-3 text-sm text-gray-500">
+                          <td className="px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm text-gray-700 max-w-xs truncate">{conf.title}</td>
+                          <td className="px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm text-gray-500">{conf.category.name}</td>
+                          <td className="px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm text-gray-500">
                             {new Date(conf.startDatetime).toLocaleString("fr-FR", { 
                               day: "2-digit", 
                               month: "2-digit", 
@@ -399,7 +399,7 @@ export default function EventsPage() {
                               minute: "2-digit" 
                             })}
                           </td>
-                          <td className="px-6 py-3 text-sm text-gray-500">
+                          <td className="px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm text-gray-500">
                             {new Date(conf.endDatetime).toLocaleString("fr-FR", { 
                               day: "2-digit", 
                               month: "2-digit", 
@@ -407,23 +407,23 @@ export default function EventsPage() {
                               minute: "2-digit" 
                             })}
                           </td>
-                          <td className="px-6 py-3 text-sm text-gray-400">—</td>
-                          <td className="px-6 py-3 text-sm">
+                          <td className="px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm text-gray-400">—</td>
+                          <td className="px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm">
                             <span className={`px-2 py-1 rounded-full text-xs ${conf.isVisible ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}>
                               {conf.isVisible ? "Oui" : "Non"}
                             </span>
                           </td>
-                          <td className="px-6 py-3 text-sm text-gray-500">
+                          <td className="px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm text-gray-500">
                             {conf.createdAt
                               ? new Date(conf.createdAt).toLocaleDateString("fr-FR")
                               : "Non renseigné"}
                           </td>
-                          <td className="px-6 py-3 text-sm text-gray-500">
+                          <td className="px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm text-gray-500">
                             {conf.updatedAt
                               ? new Date(conf.updatedAt).toLocaleDateString("fr-FR")
                               : "Non renseigné"}
                           </td>
-                          <td className="px-6 py-3">
+                          <td className="px-3 sm:px-6 py-2 sm:py-3">
                             <DropdownMenu
                               actions={[
                                 {
@@ -550,11 +550,11 @@ export default function EventsPage() {
             <label htmlFor="eventVisible" className="text-sm text-gray-700">Visible publiquement</label>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
             <button
               type="submit"
               disabled={actionLoading}
-              className="flex-1 py-3 px-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 disabled:opacity-50"
+              className="flex-1 py-2 sm:py-3 px-4 bg-indigo-600 text-white text-sm sm:text-base rounded-lg font-semibold hover:bg-indigo-700 disabled:opacity-50"
             >
               {actionLoading ? "Traitement..." : selectedEvent ? "Modifier" : "Créer"}
             </button>
@@ -562,7 +562,7 @@ export default function EventsPage() {
               type="button"
               onClick={() => setShowEventModal(false)}
               disabled={actionLoading}
-              className="flex-1 py-3 px-4 bg-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-400"
+              className="flex-1 py-2 sm:py-3 px-4 bg-gray-300 text-gray-700 text-sm sm:text-base rounded-lg font-semibold hover:bg-gray-400"
             >
               Annuler
             </button>
@@ -656,11 +656,11 @@ export default function EventsPage() {
             <label htmlFor="confVisible" className="text-sm text-gray-700">Visible publiquement</label>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
             <button
               type="submit"
               disabled={actionLoading}
-              className="flex-1 py-3 px-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 disabled:opacity-50"
+              className="flex-1 py-2 sm:py-3 px-4 bg-indigo-600 text-white text-sm sm:text-base rounded-lg font-semibold hover:bg-indigo-700 disabled:opacity-50"
             >
               {actionLoading ? "Traitement..." : selectedConference ? "Modifier" : "Créer"}
             </button>
@@ -668,7 +668,7 @@ export default function EventsPage() {
               type="button"
               onClick={() => setShowConferenceModal(false)}
               disabled={actionLoading}
-              className="flex-1 py-3 px-4 bg-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-400"
+              className="flex-1 py-2 sm:py-3 px-4 bg-gray-300 text-gray-700 text-sm sm:text-base rounded-lg font-semibold hover:bg-gray-400"
             >
               Annuler
             </button>

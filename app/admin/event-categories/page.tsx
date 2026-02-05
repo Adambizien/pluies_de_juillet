@@ -158,15 +158,15 @@ export default function EventCategoriesPage() {
   }
 
   return (
-    <div className="p-8">
-      <div className="mb-6 flex justify-between items-center">
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Catégories d&apos;événements</h1>
-          <p className="text-gray-600 mt-2">Gérez les catégories des événements</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Catégories d&apos;événements</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1 sm:mt-2">Gérez les catégories des événements</p>
         </div>
         <button
           onClick={openCreateModal}
-          className="bg-indigo-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-indigo-700 transition-colors"
+          className="w-full sm:w-auto bg-indigo-600 text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg text-sm sm:text-base font-semibold hover:bg-indigo-700 transition-colors"
         >
           Ajouter une catégorie
         </button>
@@ -174,23 +174,24 @@ export default function EventCategoriesPage() {
 
       <div className="bg-white rounded-xl shadow-md overflow-hidden">
         {categories.length === 0 ? (
-          <div className="p-8 text-center">
-            <p className="text-gray-500">Aucune catégorie pour le moment</p>
+          <div className="p-6 sm:p-8 text-center">
+            <p className="text-sm sm:text-base text-gray-500">Aucune catégorie pour le moment</p>
           </div>
         ) : (
-          <table className="min-w-full divide-y divide-gray-200">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Nom
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Créée le
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Modifiée le
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -198,16 +199,16 @@ export default function EventCategoriesPage() {
             <tbody className="bg-white divide-y divide-gray-200">
               {categories.map((category) => (
                 <tr key={category.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900">
                     {category.name}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500">
                     {new Date(category.createdAt).toLocaleDateString("fr-FR")}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500">
                     {new Date(category.updatedAt).toLocaleDateString("fr-FR")}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500">
                     <DropdownMenu
                       actions={[
                         {
@@ -226,6 +227,7 @@ export default function EventCategoriesPage() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
 
@@ -261,11 +263,11 @@ export default function EventCategoriesPage() {
             />
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
             <button
               type="submit"
               disabled={actionLoading}
-              className="flex-1 py-3 px-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 py-2 sm:py-3 px-4 bg-indigo-600 text-white text-sm sm:text-base rounded-lg font-semibold hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {actionLoading ? "Traitement..." : selectedCategory ? "Modifier" : "Créer"}
             </button>
@@ -278,7 +280,7 @@ export default function EventCategoriesPage() {
                 setError("");
               }}
               disabled={actionLoading}
-              className="flex-1 py-3 px-4 bg-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-400 disabled:opacity-50"
+              className="flex-1 py-2 sm:py-3 px-4 bg-gray-300 text-gray-700 text-sm sm:text-base rounded-lg font-semibold hover:bg-gray-400 disabled:opacity-50"
             >
               Annuler
             </button>

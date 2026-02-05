@@ -86,17 +86,17 @@ export default function Register() {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-6 sm:py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full">
-          <div className="bg-white rounded-2xl shadow-xl p-8 border border-green-100">
+          <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-green-100">
             <div className="text-center">
-              <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="mx-auto w-14 sm:w-16 h-14 sm:h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                <svg className="w-7 sm:w-8 h-7 sm:h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Inscription réussie !</h3>
-              <p className="text-gray-600">Redirection vers la page de connexion...</p>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">Inscription réussie !</h3>
+              <p className="text-sm sm:text-base text-gray-600">Redirection vers la page de connexion...</p>
             </div>
           </div>
         </div>
@@ -105,26 +105,26 @@ export default function Register() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-6 sm:py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+        <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
+          <div className="text-center mb-6 sm:mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
               Créer un compte
             </h2>
-            <p className="mt-2 text-gray-600">Rejoignez-nous dès aujourd&apos;hui</p>
+            <p className="mt-2 text-sm sm:text-base text-gray-600">Rejoignez-nous dès aujourd&apos;hui</p>
           </div>
 
           {error && (
-            <div className="rounded-lg bg-red-50 border border-red-200 p-4 mb-6">
-              <p className="text-sm font-medium text-red-800">{error}</p>
+            <div className="rounded-lg bg-red-50 border border-red-200 p-3 sm:p-4 mb-6">
+              <p className="text-xs sm:text-sm font-medium text-red-800">{error}</p>
             </div>
           )}
 
           <form className="space-y-5" onSubmit={handleSubmit}>
             <div className="space-y-4">
               <div>
-                <label htmlFor="firstname" className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label htmlFor="firstname" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
                   Prénom
                 </label>
                 <input
@@ -132,12 +132,12 @@ export default function Register() {
                   name="firstname"
                   type="text"
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400 text-sm sm:text-base"
                   placeholder="Votre prénom"
                 />
               </div>
               <div>
-                <label htmlFor="lastname" className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label htmlFor="lastname" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
                   Nom
                 </label>
                 <input
@@ -145,12 +145,12 @@ export default function Register() {
                   name="lastname"
                   type="text"
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400 text-sm sm:text-base"
                   placeholder="Votre nom"
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label htmlFor="email" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
                   Email
                 </label>
                 <input
@@ -159,12 +159,12 @@ export default function Register() {
                   type="email"
                   autoComplete="email"
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400 text-sm sm:text-base"
                   placeholder="votre.email@exemple.com"
                 />
               </div>
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label htmlFor="password" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
                   Mot de passe
                 </label>
                 <input
@@ -175,7 +175,7 @@ export default function Register() {
                   required
                   value={password}
                   onChange={(e) => handlePasswordChange(e.target.value)}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400 ${
+                  className={`w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400 text-sm sm:text-base ${
                     passwordErrors.length > 0 ? "border-red-300" : "border-gray-300"
                   }`}
                   placeholder="••••••••"
@@ -196,7 +196,7 @@ export default function Register() {
                 )}
               </div>
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label htmlFor="phone" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
                   Téléphone <span className="text-gray-400 text-xs">(optionnel)</span>
                 </label>
                 <input
@@ -205,7 +205,7 @@ export default function Register() {
                   type="tel"
                   value={phone}
                   onChange={(e) => handlePhoneChange(e.target.value)}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400 ${
+                  className={`w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400 text-sm sm:text-base ${
                     phoneError ? "border-red-300" : "border-gray-300"
                   }`}
                   placeholder="06 12 34 56 78"
@@ -215,14 +215,14 @@ export default function Register() {
                 )}
               </div>
               <div>
-                <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label htmlFor="dateOfBirth" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
                   Date de naissance <span className="text-gray-400 text-xs">(optionnel)</span>
                 </label>
                 <input
                   id="dateOfBirth"
                   name="dateOfBirth"
                   type="date"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 text-sm sm:text-base"
                 />
               </div>
             </div>
@@ -230,11 +230,11 @@ export default function Register() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 px-4 rounded-lg font-medium hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl"
+              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-2 sm:py-3 px-4 rounded-lg text-sm sm:text-base font-medium hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl"
             >
               {loading ? (
                 <span className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                  <svg className="animate-spin -ml-1 mr-3 h-4 sm:h-5 w-4 sm:w-5 text-white" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
@@ -246,7 +246,7 @@ export default function Register() {
             </button>
 
             <div className="text-center pt-4">
-              <p className="text-sm text-gray-600">
+              <p className="text-xs sm:text-sm text-gray-600">
                 Déjà un compte ?{" "}
                 <a href="/login" className="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">
                   Se connecter

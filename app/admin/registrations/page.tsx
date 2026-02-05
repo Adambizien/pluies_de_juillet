@@ -152,24 +152,24 @@ export default function RegistrationsPage() {
   };
 
   return (
-    <div className="p-8">
-      <div className="mb-6 flex justify-between items-center">
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Inscriptions</h1>
-          <p className="text-gray-600 mt-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Inscriptions</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1 sm:mt-2">
             Gestion des inscriptions aux événements
           </p>
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="bg-indigo-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-indigo-700 transition-colors"
+          className="w-full sm:w-auto bg-indigo-600 text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg text-sm sm:text-base font-semibold hover:bg-indigo-700 transition-colors"
         >
           Ajouter une inscription
         </button>
       </div>
 
           {error && (
-          <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+          <div className="mb-4 p-3 sm:p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm sm:text-base">
             {error}
           </div>
         )}
@@ -178,7 +178,7 @@ export default function RegistrationsPage() {
           <div className="flex justify-center items-center h-64">
             <div className="text-center">
               <svg
-                className="animate-spin h-12 w-12 text-indigo-600 mx-auto"
+                className="animate-spin h-10 w-10 sm:h-12 sm:w-12 text-indigo-600 mx-auto"
                 fill="none"
                 viewBox="0 0 24 24"
               >
@@ -196,7 +196,7 @@ export default function RegistrationsPage() {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 />
               </svg>
-              <p className="mt-4 text-gray-600">Chargement...</p>
+              <p className="mt-4 text-sm sm:text-base text-gray-600">Chargement...</p>
             </div>
           </div>
         ) : (
@@ -205,28 +205,28 @@ export default function RegistrationsPage() {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Email
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Nom
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Événement
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Date début
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Date fin
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Prix
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Date d&apos;inscription               
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
@@ -234,45 +234,45 @@ export default function RegistrationsPage() {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {registrations.length === 0 ? (
                     <tr>
-                      <td colSpan={8} className="px-6 py-4 text-center text-gray-500">
+                      <td colSpan={8} className="px-3 sm:px-6 py-3 sm:py-4 text-center text-sm sm:text-base text-gray-500">
                         Aucune inscription
                       </td>
                     </tr>
                   ) : (
                     registrations.map((registration) => (
                       <tr key={registration.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-900">
                           {registration.user.email}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-900">
                           {registration.user.userInfo?.firstname && registration.user.userInfo?.lastname
                             ? `${registration.user.userInfo.firstname} ${registration.user.userInfo.lastname}`
                             : "Non renseigné"}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-900">
                           {registration.event?.title || "Non renseigné"}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500">
                           {new Date(registration.event.startDate).toLocaleDateString("fr-FR", {
                             year: "numeric",
                             month: "2-digit",
                             day: "2-digit",
                           })}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500">
                           {new Date(registration.event.endDate).toLocaleDateString("fr-FR", {
                             year: "numeric",
                             month: "2-digit",
                             day: "2-digit",
                           })}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-900">
                           {(registration.event.price / 100).toFixed(2)} €
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500">
                           {new Date(registration.createdAt).toLocaleDateString("fr-FR")}                   
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm">
                           <button
                             onClick={() => handleDeleteRegistration(registration.id)}
                             disabled={deleteLoading === registration.id}
@@ -326,18 +326,18 @@ export default function RegistrationsPage() {
             placeholder="Selectionner un evenement"
           />
 
-          <div className="flex gap-3 pt-4">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-4">
             <button
               type="submit"
               disabled={actionLoading}
-              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+              className="px-4 py-2 bg-indigo-600 text-white text-sm sm:text-base rounded-lg hover:bg-indigo-700 disabled:opacity-50"
             >
               {actionLoading ? "Ajout en cours..." : "Ajouter"}
             </button>
             <button
               type="button"
               onClick={() => setShowModal(false)}
-              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+              className="px-4 py-2 bg-gray-300 text-gray-700 text-sm sm:text-base rounded-lg hover:bg-gray-400"
             >
               Annuler
             </button>

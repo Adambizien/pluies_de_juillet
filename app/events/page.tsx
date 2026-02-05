@@ -112,38 +112,38 @@ export default function EventsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
             Tous les événements
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-base sm:text-lg text-gray-600">
             Découvrez tous nos événements à venir
           </p>
         </div>
 
         {/* Filtres */}
-        <div className="bg-white rounded-xl shadow-md p-6 mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-gray-900">Filtres</h2>
+        <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 mb-4">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Filtres</h2>
             <button
               onClick={resetFilters}
-              className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
+              className="text-xs sm:text-sm text-indigo-600 hover:text-indigo-700 font-medium w-fit"
             >
               Réinitialiser
             </button>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {/* Filtre catégorie d'événement */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                 Catégorie d&apos;événement
               </label>
               <select
                 value={selectedEventCategory}
                 onChange={(e) => setSelectedEventCategory(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base"
               >
                 <option value="">Toutes les catégories</option>
                 {eventCategories.map((cat) => (
@@ -156,13 +156,13 @@ export default function EventsPage() {
 
             {/* Filtre catégorie de conférence */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                 Catégorie de conférence
               </label>
               <select
                 value={selectedConferenceCategory}
                 onChange={(e) => setSelectedConferenceCategory(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base"
               >
                 <option value="">Toutes les catégories</option>
                 {conferenceCategories.map((cat) => (
@@ -175,32 +175,32 @@ export default function EventsPage() {
 
             {/* Filtre date de début */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                 Date de début minimum
               </label>
               <input
                 type="date"
                 value={startDateFilter}
                 onChange={(e) => setStartDateFilter(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base"
               />
             </div>
 
             {/* Filtre date de fin */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                 Date de fin maximum
               </label>
               <input
                 type="date"
                 value={endDateFilter}
                 onChange={(e) => setEndDateFilter(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base"
               />
             </div>
           </div>
 
-          <div className="mt-4 text-sm text-gray-600">
+          <div className="mt-4 text-xs sm:text-sm text-gray-600">
             {filteredEvents.length} événement{filteredEvents.length !== 1 ? "s" : ""} trouvé{filteredEvents.length !== 1 ? "s" : ""}
           </div>
         </div>
@@ -208,52 +208,52 @@ export default function EventsPage() {
         {/* Liste des événements */}
         {loading ? (
           <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-            <p className="mt-4 text-gray-600">Chargement des événements...</p>
+            <div className="inline-block animate-spin rounded-full h-10 sm:h-12 w-10 sm:w-12 border-b-2 border-indigo-600"></div>
+            <p className="mt-4 text-sm sm:text-base text-gray-600">Chargement des événements...</p>
           </div>
         ) : filteredEvents.length === 0 ? (
-          <div className="bg-white rounded-lg shadow p-12 text-center">
-            <svg className="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="bg-white rounded-lg shadow p-8 sm:p-12 text-center">
+            <svg className="w-14 sm:w-16 h-14 sm:h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <p className="text-gray-500 text-lg">
+            <p className="text-gray-500 text-base sm:text-lg">
               Aucun événement ne correspond à vos critères
             </p>
             <button
               onClick={resetFilters}
-              className="mt-4 px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors"
+              className="mt-4 px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm sm:text-base font-medium rounded-lg transition-colors"
             >
               Réinitialiser les filtres
             </button>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {filteredEvents.map((event) => (
               <Link
                 key={event.id}
                 href={`/events/${event.id}`}
                 className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden group flex flex-col"
               >
-                <div className="p-6 flex flex-col flex-1">
-                  <div className="flex items-start justify-between mb-3">
-                    <span className="inline-block px-3 py-1 bg-indigo-100 text-indigo-700 text-sm font-medium rounded-full">
+                <div className="p-4 sm:p-6 flex flex-col flex-1">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-0 mb-3">
+                    <span className="inline-block px-3 py-1 bg-indigo-100 text-indigo-700 text-xs sm:text-sm font-medium rounded-full w-fit">
                       {event.category.name}
                     </span>
-                    <span className="text-lg font-bold text-indigo-600">
+                    <span className="text-base sm:text-lg font-bold text-indigo-600">
                       {event.price === 0 ? "Gratuit" : `${(event.price / 100).toFixed(2)} €`}
                     </span>
                   </div>
                   
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors" style={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0, wordBreak: 'break-word'}}>
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors" style={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0, wordBreak: 'break-word'}}>
                     {event.title}
                   </h3>
                   
-                  <p className="text-gray-600 text-sm mb-4" style={{display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', wordBreak: 'break-word'}}>
+                  <p className="text-gray-600 text-xs sm:text-sm mb-4" style={{display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', wordBreak: 'break-word'}}>
                     {event.description}
                   </p>
                   
                   <div className="space-y-2 mb-4">
-                    <div className="flex items-center text-sm text-gray-500 space-x-2">
+                    <div className="flex items-center text-xs sm:text-sm text-gray-500 space-x-2">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
@@ -262,7 +262,7 @@ export default function EventsPage() {
                         {event.startDate !== event.endDate && ` - ${formatDate(event.endDate)}`}
                       </span>
                     </div>
-                    <div className="flex items-center text-sm text-gray-500 space-x-2">
+                    <div className="flex items-center text-xs sm:text-sm text-gray-500 space-x-2">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
                       </svg>
@@ -282,7 +282,7 @@ export default function EventsPage() {
                             key={conf.id}
                             className="p-2 bg-purple-50 border border-purple-200 rounded"
                           >
-                            <p className="text-sm font-medium text-gray-900" style={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{conf.title}</p>
+                            <p className="text-xs sm:text-sm font-medium text-gray-900" style={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{conf.title}</p>
                             <p className="text-xs text-purple-700 mt-1">{conf.category.name}</p>
                           </div>
                         ))}
@@ -295,7 +295,7 @@ export default function EventsPage() {
                     </div>
                   )}
                   
-                  <div className="mt-auto flex items-center text-indigo-600 font-medium group-hover:text-indigo-700">
+                  <div className="mt-auto flex items-center text-indigo-600 font-medium group-hover:text-indigo-700 text-sm sm:text-base">
                     <span>Voir les détails</span>
                     <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
