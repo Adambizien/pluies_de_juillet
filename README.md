@@ -24,22 +24,8 @@ npm install
 
 ### 3. Configurer la base de données
 
-#### a) Installer PostgreSQL (si pas déjà installé)
 
-**Linux (Ubuntu/Debian):**
-```bash
-sudo apt update
-sudo apt install postgresql postgresql-contrib
-sudo service postgresql start
-```
-
-**macOS (avec Homebrew):**
-```bash
-brew install postgresql@15
-brew services start postgresql@15
-```
-
-#### b) Créer la base de données
+#### Créer la base de données
 
 ```bash
 PGPASSWORD=postgres psql -U postgres -h localhost < src/migrations/01-init-database.sql
@@ -76,7 +62,15 @@ Au démarrage, tu devrais voir :
 Database connected successfully
 ```
 
-Les tables `users` et `user_info` seront créées automatiquement.
+Les tables suivantes seront créées automatiquement :
+- **users** - Comptes utilisateurs (email, password, rôle)
+- **user_info** - Informations utilisateur (prénom, nom, téléphone, date de naissance)
+- **event_categories** - Catégories d'événements
+- **events** - Événements (titre, description, date, prix, etc.)
+- **conference_categories** - Catégories de conférences
+- **conferences** - Conférences associées aux événements
+- **registrations** - Inscriptions des utilisateurs aux événements
+- **user_programs** - Programme personnalisé des utilisateurs
 
 ## Créer un compte administrateur
 
